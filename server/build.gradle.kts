@@ -3,11 +3,12 @@ val kotlin_version: String by project
 val logback_version: String by project
 val prometheus_version: String by project
 val koin_version: String by project
+val docsVersion: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.5.31"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.31"
+    kotlin("jvm") version "1.6.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.0"
     id("com.google.cloud.tools.appengine") version "2.4.2"
 }
 
@@ -36,9 +37,10 @@ repositories {
 
 dependencies {
     implementation("dev.gitlive:firebase-database-jvm:1.4.3")
-    implementation("io.bkbn:kompendium-core:1.9.1")
-    implementation("io.bkbn:kompendium-auth:1.9.1")
-    implementation("io.bkbn:kompendium-swagger-ui:1.9.1")
+    implementation("io.bkbn:kompendium-core:$docsVersion")
+    implementation("io.bkbn:kompendium-auth:$docsVersion")
+    implementation("io.bkbn:kompendium-swagger-ui:$docsVersion")
+    implementation("de.mkammerer:argon2-jvm:2.11")
     implementation("dev.gitlive:firebase-firestore-jvm:1.4.3")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")

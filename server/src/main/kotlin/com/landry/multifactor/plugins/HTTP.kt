@@ -1,5 +1,6 @@
 package com.landry.multifactor.plugins
 
+import io.bkbn.kompendium.models.oas.OpenApiSpec
 import io.ktor.features.*
 import io.ktor.http.content.*
 import io.ktor.http.*
@@ -23,6 +24,7 @@ fun Application.configureHTTP() {
             minimumSize(1024) // condition
         }
     }
+
     install(ConditionalHeaders)
     install(CORS) {
         method(HttpMethod.Options)
@@ -38,7 +40,7 @@ fun Application.configureHTTP() {
         header("X-Engine", "Ktor") // will send this header with each response
     }
     install(PartialContent) {
-        // Maximum number of ranges that will be accepted from a HTTP request.
+        // Maximum number of ranges that will be accepted from an HTTP request.
         // If the HTTP request specifies more ranges, they will all be merged into a single range.
         maxRangeCount = 10
     }

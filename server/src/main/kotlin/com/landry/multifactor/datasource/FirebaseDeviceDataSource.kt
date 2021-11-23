@@ -16,7 +16,7 @@ class FirebaseDeviceDataSource: AbstractDeviceDataSource() {
         devices.add(device, Device.serializer())
     }
 
-    override suspend fun getDeviceById(id: String): Device {
+    override suspend fun getDeviceById(id: String): Device? {
         return devices.document(id).await(Device.serializer())
     }
 

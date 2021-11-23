@@ -14,12 +14,13 @@ fun Application.configureSecurity() {
     authentication {
         jwt {
             val jwtAudience = environment.config.property("jwt.audience").getString()
+            val domain = environment.config.property("jwt.domain").getString()
             realm = environment.config.property("jwt.realm").getString()
             verifier(
                 JWT
                     .require(Algorithm.HMAC256("secret"))
                     .withAudience(jwtAudience)
-                    .withIssuer(environment.config.property("jwt.domain").getString())
+                    .withIssuer(domain)
                     .build()
             )
             validate { credential ->
