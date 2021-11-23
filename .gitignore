@@ -1,1 +1,2 @@
-server/src/main/resources/application.local.conf
+server/src/main/resources/application.conf
+server/build/
