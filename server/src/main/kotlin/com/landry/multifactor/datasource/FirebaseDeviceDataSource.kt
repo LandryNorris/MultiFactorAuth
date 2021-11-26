@@ -3,10 +3,11 @@ package com.landry.multifactor.datasource
 import com.landry.multifactor.await
 import com.landry.multifactor.firebaseApp
 import com.landry.multifactor.models.Device
+import com.landry.multifactor.params.QueryDeviceParams
 import com.landry.multifactor.responses.DeviceResponse
-import com.landry.multifactor.params.DeviceParams
 import com.landry.multifactor.responses.toResponse
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.firestore.Query
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.firestore.where
 
@@ -26,5 +27,20 @@ class FirebaseDeviceDataSource: AbstractDeviceDataSource() {
 
     override suspend fun getDevicesByUser(userId: String): List<Device> {
         return devices.where("userId", equalTo = userId).await(Device.serializer())
+    }
+
+    override suspend fun updateDevice(id: String, device: Device) {
+        devices.document(id).update(device)
+    }
+
+    override suspend fun queryDevices(params: QueryDeviceParams): List<Device> = params.run {
+        if(listOf<Any?>(userId, mac, name, isActive).all { it == null }) throw IllegalArgumentException()
+        return devices.whereIfNotNull("userId", userId).whereIfNotNull("mac", mac)
+            .whereIfNotNull("deviceName", name).whereIfNotNull("isActive", isActive).await(Device.serializer())
+    }
+
+    private fun Query.whereIfNotNull(field: String, equalTo: Any?): Query {
+        return if(equalTo == null) this
+        else where(field, equalTo = equalTo)
     }
 }

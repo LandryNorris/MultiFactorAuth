@@ -1,6 +1,6 @@
 package com.landry.multifactor
 
-import com.google.cloud.firestore.Blob
+import com.landry.multifactor.models.Device
 import com.landry.multifactor.models.User
 import com.landry.multifactor.utils.EncryptionHelper
 import org.junit.Test
@@ -48,5 +48,16 @@ class EncryptionTest {
         val encryptedUser = user.encrypt(key)
         assertEquals(user.iv, encryptedUser.iv)
         assertEquals(user, encryptedUser.decrypt(key))
+    }
+
+    @Test
+    fun testEncryptingDecryptingDevice() {
+        val key = EncryptionHelper.generateKey()
+        val iv = EncryptionHelper.generateIV().base64Encode()
+        val device = Device("", "A MAC value", "A user ID", "A Device Name", "A Secret Value", iv, true)
+
+        val encryptedDevice = device.encrypt(key)
+        assertEquals(device.iv, encryptedDevice.iv)
+        assertEquals(device, encryptedDevice.decrypt(key))
     }
 }

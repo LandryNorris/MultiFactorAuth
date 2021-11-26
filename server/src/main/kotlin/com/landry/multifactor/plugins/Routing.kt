@@ -23,6 +23,3 @@ fun Application.configureRouting() {
         deviceRoutes()
     }
 }
-
-class AuthenticationException : RuntimeException()
-class AuthorizationException : RuntimeException()

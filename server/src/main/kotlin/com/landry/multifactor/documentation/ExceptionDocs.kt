@@ -9,4 +9,6 @@ val authorizationExceptionDocs = ResponseInfo<Unit>(HttpStatusCode.Forbidden, "U
 
 val emailExistsExceptionDocs = ResponseInfo<Unit>(HttpStatusCode.Conflict, "User in not authorized")
 
-val notFoundExceptionDocs = ResponseInfo<Unit>(HttpStatusCode.NotFound, "User in not authorized")
+val notFoundExceptionDocs = ResponseInfo<Unit>(HttpStatusCode.NotFound, "Not Found")
+
+val illegalArgumentDocs = ResponseInfo<Unit>(HttpStatusCode.BadRequest, "Missing or invalid arguments")

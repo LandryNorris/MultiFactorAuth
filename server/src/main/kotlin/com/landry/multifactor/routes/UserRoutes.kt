@@ -1,11 +1,15 @@
 package com.landry.multifactor.routes
 
+import com.landry.multifactor.documentation.getUserByEmailDocs
 import com.landry.multifactor.documentation.loginDocs
 import com.landry.multifactor.documentation.registrationDocs
+import com.landry.multifactor.exceptions.AuthenticationException
 import com.landry.multifactor.notarizedPostRoute
 import com.landry.multifactor.params.LoginParams
 import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.repos.UserRepository
+import com.landry.multifactor.responses.toUserResponse
+import io.bkbn.kompendium.Notarized.notarizedGet
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -21,7 +25,7 @@ fun Route.userRoutes() {
             val loginResponse = usersRepo.login(loginParams.email, loginParams.password)
 
             if(loginResponse == null) {
-                call.respond(HttpStatusCode.Forbidden)
+                throw AuthenticationException()
             } else {
                 call.respond(HttpStatusCode.OK, loginResponse)
             }
@@ -33,6 +37,13 @@ fun Route.userRoutes() {
             val registrationResponse = usersRepo.register(registrationParams)
 
             call.respond(HttpStatusCode.OK, registrationResponse)
+        }
+
+        notarizedGet(getUserByEmailDocs) {
+            val email = call.parameters["email"] ?: throw IllegalArgumentException("email must not be null")
+
+            val userResponse = usersRepo.getUserByEmail(email)!!.decrypt().toUserResponse()
+            call.respond(status = HttpStatusCode.OK, userResponse)
         }
     }
 }

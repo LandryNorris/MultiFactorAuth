@@ -7,6 +7,7 @@ import com.landry.multifactor.models.User
 import com.landry.multifactor.responses.LoginResponse
 import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.responses.UserResponse
+import com.landry.multifactor.responses.toUserResponse
 import com.landry.multifactor.utils.EncryptionHelper
 import com.landry.multifactor.utils.TokenGenerator
 import de.mkammerer.argon2.Argon2
@@ -32,17 +33,20 @@ class UserRepository(private val dataSource: AbstractUsersDataSource) {
     }
 
     suspend fun register(registrationParams: RegistrationParams): UserResponse {
-        return registrationParams.run {
-            val existingUser = getUserByEmail(email)
-            if(existingUser != null) throw EmailAlreadyExistsException(email)
+        registrationParams.run {
+            val existingUser = dataSource.userExists(email)
+            if(existingUser) throw EmailAlreadyExistsException(email)
             println("Hashing password. $numIterations")
 
             val hash = argon2.hash(numIterations, HASH_MEMORY, HASH_PARALLELISM, password.toCharArray())
             val iv = EncryptionHelper.generateIV().base64Encode()
-            val user = User("", email, firstName, lastName, hash, iv).encrypt()
-            dataSource.registerUser(user)
+            val user = User("", email, firstName, lastName, hash, iv)
+            val userResponse = dataSource.registerUser(user.encrypt())
+            user.id = userResponse.id
+
+            return user.toUserResponse()
         }
     }
 
-    private suspend fun getUserByEmail(email: String) = dataSource.getUserByEmail(email)
+    suspend fun getUserByEmail(email: String) = dataSource.getUserByEmail(email)
 }
