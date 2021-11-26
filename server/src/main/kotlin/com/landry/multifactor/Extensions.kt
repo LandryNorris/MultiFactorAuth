@@ -43,9 +43,11 @@ inline fun <reified T: Any, reified S: Any, reified R: Any> Route.notarizedPostR
 }
 
 val koin by lazy { GlobalContext.get() }
-
 inline fun <reified T : Any> inject() = koin.inject<T>()
 
-fun LocalDateTime.toDate() = Date.from(toInstant(ZoneOffset.UTC))
+fun LocalDateTime.toDate(): Date = Date.from(toInstant(ZoneOffset.UTC))
 
 suspend inline fun <reified T> DatabaseReference.getValueImmediate():T? = childEvents().firstOrNull()?.snapshot?.value<T>()
+
+fun ByteArray.base64Encode() = Base64.getEncoder().encode(this).decodeToString()
+fun String.base64Decode(): ByteArray = Base64.getDecoder().decode(this)

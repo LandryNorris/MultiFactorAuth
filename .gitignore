@@ -1,2 +1,5 @@
 server/src/main/resources/application.conf
 server/build/
+server/.gradle
+server/.idea
+

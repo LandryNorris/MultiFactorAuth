@@ -28,6 +28,7 @@ fun Route.userRoutes() {
         }
 
         notarizedPostRoute("/register", registrationDocs) {
+            println("registering user")
             val registrationParams = call.receive<RegistrationParams>()
             val registrationResponse = usersRepo.register(registrationParams)
 

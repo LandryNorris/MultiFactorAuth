@@ -1,4 +1,4 @@
-package com.landry.multifactor.models
+package com.landry.multifactor.responses
 
 import kotlinx.serialization.Serializable
 
