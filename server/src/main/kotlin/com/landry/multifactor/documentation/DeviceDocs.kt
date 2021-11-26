@@ -20,6 +20,7 @@ val getDeviceDocs = MethodInfo.GetInfo(
     parameterExamples = mapOf("example" to GetDevicesParams("id")),
     responseInfo = ResponseInfo(HttpStatusCode.OK, "device with this id.", examples = mapOf("example" to exampleDevicesList.first())),
     canThrow = setOf(IllegalArgumentException::class, NullPointerException::class),
+    securitySchemes = setOf("jwt"),
     tags = setOf("devices")
 )
 
@@ -27,6 +28,7 @@ val createDeviceDocs = MethodInfo.PostInfo<Unit, DeviceParams, DeviceResponse>(
     summary = "Create a new device for a user",
     responseInfo = ResponseInfo(HttpStatusCode.OK, description = "Created device", examples = mapOf("example" to exampleDevicesList.first())),
     requestInfo = RequestInfo("Parameters to create the device", examples = mapOf("example" to exampleCreateDeviceParams)),
+    securitySchemes = setOf("jwt"),
     tags = setOf("devices")
 )
 
@@ -35,6 +37,7 @@ val queryDevicesDocs = MethodInfo.GetInfo(
     parameterExamples = mapOf("example" to QueryDeviceParams(null, null, null, null)),
     responseInfo = ResponseInfo(HttpStatusCode.OK, "Devices matching queries", examples = mapOf("example" to exampleDevicesList)),
     canThrow = setOf(IllegalArgumentException::class, NullPointerException::class),
+    securitySchemes = setOf("jwt"),
     tags = setOf("devices")
 )
 
@@ -43,5 +46,6 @@ val deactivateDeviceDocs = MethodInfo.PostInfo<GetDevicesParams, Unit, Unit>(
     parameterExamples = mapOf("example" to GetDevicesParams("id")),
     responseInfo = ResponseInfo(HttpStatusCode.OK, "successful operation", examples = mapOf()),
     canThrow = setOf(IllegalArgumentException::class, NullPointerException::class),
+    securitySchemes = setOf("jwt"),
     tags = setOf("devices")
 )

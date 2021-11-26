@@ -38,5 +38,6 @@ val getUserByEmailDocs = MethodInfo.GetInfo(
     parameterExamples = mapOf("example" to GetUserByEmail("email")),
     responseInfo = ResponseInfo(HttpStatusCode.OK, "User with given email", examples = mapOf("example" to exampleUserResponse)),
     canThrow = setOf(IllegalArgumentException::class, NullPointerException::class),
+    securitySchemes = setOf("jwt"),
     tags = setOf("users")
 )

@@ -12,6 +12,7 @@ import com.landry.multifactor.responses.toResponse
 import io.bkbn.kompendium.Notarized.notarizedGet
 import io.bkbn.kompendium.Notarized.notarizedPost
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -19,13 +20,14 @@ import io.ktor.routing.*
 import org.koin.ktor.ext.inject
 
 fun Route.deviceRoutes() {
-    route("devices") {
-        val repo by inject<DeviceRepository>()
+    authenticate("jwt") {
+        route("devices") {
+            val repo by inject<DeviceRepository>()
+            baseDeviceRoutes(repo)
 
-        baseDeviceRoutes(repo)
-
-        route("{id}") {
-            deviceByIdRoutes(repo)
+            route("{id}") {
+                deviceByIdRoutes(repo)
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.landry.multifactor.plugins
 
 import com.landry.multifactor.routes.deviceRoutes
+import com.landry.multifactor.routes.rootRoutes
 import com.landry.multifactor.routes.userRoutes
 import io.ktor.routing.*
 import io.ktor.http.*
@@ -19,6 +20,7 @@ fun Application.configureRouting() {
     }
 
     routing {
+        rootRoutes()
         userRoutes()
         deviceRoutes()
     }
