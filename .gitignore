@@ -2,4 +2,8 @@ server/src/main/resources/application.conf
 server/build/
 server/.gradle
 server/.idea
-
+2FactorAuth/shared/build
+2FactorAuth/androidApp/build
+2FactorAuth/.gradle
+2FactorAuth/.idea
+2FactorAuth/local.properties
