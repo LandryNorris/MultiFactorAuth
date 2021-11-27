@@ -1,10 +1,15 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 val ktorVersion: String by project
+val jsonVersion: String by project
+val coroutinesVersion: String by project
+val decomposeVersion: String by project
+val connectivityStatusVersion: String by project
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("kotlin-android-extensions")
+    kotlin("plugin.serialization") version "1.6.0"
 }
 
 group = "me.landry"
@@ -27,6 +32,10 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-client-auth:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$jsonVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+                implementation("com.github.ln-12:multiplatform-connectivity-status:$connectivityStatusVersion")
             }
         }
         val commonTest by getting {
@@ -36,7 +45,8 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation("com.google.android.material:material:1.2.1")
+                implementation("com.google.android.material:material:1.4.0")
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
             }
         }
         val androidTest by getting {

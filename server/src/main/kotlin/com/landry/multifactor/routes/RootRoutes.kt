@@ -1,13 +1,16 @@
 package com.landry.multifactor.routes
 
 import com.landry.multifactor.documentation.loginDocs
+import com.landry.multifactor.documentation.refreshDocs
 import com.landry.multifactor.documentation.registrationDocs
 import com.landry.multifactor.exceptions.AuthenticationException
 import com.landry.multifactor.notarizedPostRoute
 import com.landry.multifactor.params.LoginParams
+import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.repos.UserRepository
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -24,7 +27,7 @@ fun Route.rootRoutes() {
         if (loginResponse == null) {
             throw AuthenticationException()
         } else {
-            call.respond(io.ktor.http.HttpStatusCode.OK, loginResponse)
+            call.respond(HttpStatusCode.OK, loginResponse)
         }
     }
 
@@ -32,6 +35,15 @@ fun Route.rootRoutes() {
         println("registering user")
         val registrationParams = call.receive<RegistrationParams>()
         val registrationResponse = usersRepo.register(registrationParams)
-        call.respond(io.ktor.http.HttpStatusCode.OK, registrationResponse)
+        call.respond(HttpStatusCode.OK, registrationResponse)
+    }
+
+    authenticate("jwt") {
+        notarizedPostRoute("/refresh", refreshDocs) {
+            val params = call.receive<RefreshParams>()
+            val response = usersRepo.refresh(params)
+
+            call.respond(response)
+        }
     }
 }

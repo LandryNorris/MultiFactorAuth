@@ -3,6 +3,7 @@ package com.landry.multifactor.documentation
 import com.landry.multifactor.exceptions.AuthenticationException
 import com.landry.multifactor.responses.LoginResponse
 import com.landry.multifactor.params.LoginParams
+import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.responses.UserResponse
 import io.bkbn.kompendium.annotations.KompendiumParam
@@ -31,6 +32,10 @@ val registrationDocs = MethodInfo.PostInfo<Unit, RegistrationParams, UserRespons
     requestInfo = RequestInfo("User info", examples = mapOf("example" to registrationExample)),
     responseInfo = ResponseInfo(HttpStatusCode.OK, "Created user", examples = mapOf("example" to exampleUserResponse)),
     tags = setOf("users")
+)
+
+val refreshDocs = MethodInfo.PostInfo<Unit, RefreshParams, LoginResponse>(
+    summary = "Request a refresh token"
 )
 
 val getUserByEmailDocs = MethodInfo.GetInfo(

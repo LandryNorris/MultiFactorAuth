@@ -4,6 +4,7 @@ import com.landry.multifactor.base64Encode
 import com.landry.multifactor.datasource.AbstractUsersDataSource
 import com.landry.multifactor.exceptions.EmailAlreadyExistsException
 import com.landry.multifactor.models.User
+import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.responses.LoginResponse
 import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.responses.UserResponse
@@ -12,6 +13,7 @@ import com.landry.multifactor.utils.EncryptionHelper
 import com.landry.multifactor.utils.TokenGenerator
 import de.mkammerer.argon2.Argon2
 import de.mkammerer.argon2.Argon2Factory
+import io.ktor.http.*
 
 class UserRepository(private val dataSource: AbstractUsersDataSource) {
     companion object {
@@ -29,7 +31,17 @@ class UserRepository(private val dataSource: AbstractUsersDataSource) {
         val passwordVerified = argon2.verify(decryptedPasswordHash, password.toCharArray())
         if(!passwordVerified) return null
 
-        return LoginResponse(user.email, TokenGenerator.generate(user.email))
+        val accessToken = TokenGenerator.generate(user.email)
+        val refreshToken = TokenGenerator.generateRefresh(user.email)
+
+        return LoginResponse(user.email, accessToken, refreshToken)
+    }
+
+    fun refresh(refreshParams: RefreshParams): LoginResponse {
+        val accessToken = TokenGenerator.generate(refreshParams.email)
+        val refreshToken = TokenGenerator.generateRefresh(refreshParams.email)
+
+        return LoginResponse(refreshParams.email, accessToken, refreshToken)
     }
 
     suspend fun register(registrationParams: RegistrationParams): UserResponse {

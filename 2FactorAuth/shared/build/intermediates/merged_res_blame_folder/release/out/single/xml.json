@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/home/landry/IdeaProjects/MultiFactor/2FactorAuth/shared/build/intermediates/res/merged/release/xml/standalone_badge_gravity_bottom_end.xml",
+        "source": "/home/landry/.gradle/caches/transforms-3/033728847816021721901f9631a1baa7/transformed/material-1.4.0/res/xml/standalone_badge_gravity_bottom_end.xml"
+    },
+    {
+        "merged": "/home/landry/IdeaProjects/MultiFactor/2FactorAuth/shared/build/intermediates/res/merged/release/xml/standalone_badge_offset.xml",
+        "source": "/home/landry/.gradle/caches/transforms-3/033728847816021721901f9631a1baa7/transformed/material-1.4.0/res/xml/standalone_badge_offset.xml"
+    },
+    {
+        "merged": "/home/landry/IdeaProjects/MultiFactor/2FactorAuth/shared/build/intermediates/res/merged/release/xml/standalone_badge_gravity_bottom_start.xml",
+        "source": "/home/landry/.gradle/caches/transforms-3/033728847816021721901f9631a1baa7/transformed/material-1.4.0/res/xml/standalone_badge_gravity_bottom_start.xml"
+    },
+    {
+        "merged": "/home/landry/IdeaProjects/MultiFactor/2FactorAuth/shared/build/intermediates/res/merged/release/xml/standalone_badge_gravity_top_start.xml",
+        "source": "/home/landry/.gradle/caches/transforms-3/033728847816021721901f9631a1baa7/transformed/material-1.4.0/res/xml/standalone_badge_gravity_top_start.xml"
+    },
+    {
+        "merged": "/home/landry/IdeaProjects/MultiFactor/2FactorAuth/shared/build/intermediates/res/merged/release/xml/standalone_badge.xml",
+        "source": "/home/landry/.gradle/caches/transforms-3/033728847816021721901f9631a1baa7/transformed/material-1.4.0/res/xml/standalone_badge.xml"
+    }
+]
