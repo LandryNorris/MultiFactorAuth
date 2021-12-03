@@ -1,6 +1,9 @@
+val decomposeVersion: String by project
+
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("org.jetbrains.compose")
 }
 
 group = "me.landry"
@@ -9,14 +12,21 @@ version = "1.0-SNAPSHOT"
 dependencies {
     implementation(project(":shared"))
     implementation("com.google.android.material:material:1.2.1")
-    //implementation("androidx.appcompat:appcompat:1.4.0")
-    //implementation("androidx.constraint:constraintlayout:2.0.2")
+    implementation(compose.runtime)
+    implementation(compose.foundation)
+    implementation(compose.material)
+    implementation(compose.materialIconsExtended)
+    implementation(compose.preview)
+    implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+    implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
+    implementation("androidx.activity:activity-compose:1.4.0")
+    //implementation("androidx.compose.ui:ui-tooling:1.0.5")
 }
 
 android {
     compileSdkVersion(31)
     defaultConfig {
-        applicationId = "me.landry.androidApp"
+        applicationId = "com.landry.twofactor"
         minSdkVersion(24)
         targetSdkVersion(31)
         versionCode = 1
