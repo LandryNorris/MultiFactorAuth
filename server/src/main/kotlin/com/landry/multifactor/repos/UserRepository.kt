@@ -7,6 +7,7 @@ import com.landry.multifactor.models.User
 import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.responses.LoginResponse
 import com.landry.multifactor.params.RegistrationParams
+import com.landry.multifactor.responses.RefreshResponse
 import com.landry.multifactor.responses.UserResponse
 import com.landry.multifactor.responses.toUserResponse
 import com.landry.multifactor.utils.EncryptionHelper
@@ -34,14 +35,14 @@ class UserRepository(private val dataSource: AbstractUsersDataSource) {
         val accessToken = TokenGenerator.generate(user.email)
         val refreshToken = TokenGenerator.generateRefresh(user.email)
 
-        return LoginResponse(user.email, accessToken, refreshToken)
+        return LoginResponse(user.toUserResponse(), accessToken, refreshToken)
     }
 
-    fun refresh(refreshParams: RefreshParams): LoginResponse {
+    fun refresh(refreshParams: RefreshParams): RefreshResponse {
         val accessToken = TokenGenerator.generate(refreshParams.email)
         val refreshToken = TokenGenerator.generateRefresh(refreshParams.email)
 
-        return LoginResponse(refreshParams.email, accessToken, refreshToken)
+        return RefreshResponse(accessToken, refreshToken)
     }
 
     suspend fun register(registrationParams: RegistrationParams): UserResponse {

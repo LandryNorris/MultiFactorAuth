@@ -10,13 +10,15 @@ plugins {
     kotlin("jvm") version "1.6.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.0"
     id("com.google.cloud.tools.appengine") version "2.4.2"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 val baseJarName = "MultiFactorServer"
 group = "com.landry.multifactor"
 version = "0.0.1"
+
 application {
-    mainClass.set("io.ktor.server.cio.EngineMain")
+    mainClass.set("com.landry.multifactor.ApplicationKt")
 }
 
 appengine {
@@ -27,6 +29,24 @@ appengine {
     }
     val jarFile = File("build/libs/$baseJarName-$version-all.jar")
     stage.setArtifact(jarFile)
+}
+
+tasks {
+    shadowJar {
+        archiveBaseName.set(baseJarName)
+        mergeServiceFiles()
+        manifest {
+            attributes["Main-Class"] = "com.landry.multifactor.ApplicationKt"
+        }
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
+
+    appengineStage {
+        dependsOn(shadowJar)
+    }
 }
 
 repositories {

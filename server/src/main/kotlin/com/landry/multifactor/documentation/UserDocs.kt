@@ -5,6 +5,7 @@ import com.landry.multifactor.responses.LoginResponse
 import com.landry.multifactor.params.LoginParams
 import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.params.RegistrationParams
+import com.landry.multifactor.responses.RefreshResponse
 import com.landry.multifactor.responses.UserResponse
 import io.bkbn.kompendium.annotations.KompendiumParam
 import io.bkbn.kompendium.annotations.ParamType
@@ -34,7 +35,7 @@ val registrationDocs = MethodInfo.PostInfo<Unit, RegistrationParams, UserRespons
     tags = setOf("users")
 )
 
-val refreshDocs = MethodInfo.PostInfo<Unit, RefreshParams, LoginResponse>(
+val refreshDocs = MethodInfo.PostInfo<Unit, RefreshParams, RefreshResponse>(
     summary = "Request a refresh token"
 )
 

@@ -22,7 +22,6 @@ fun Route.userRoutes() {
     authenticate("jwt") {
         route("/users") {
             val usersRepo by inject<UserRepository>()
-
             baseUserRoutes(usersRepo)
         }
     }
