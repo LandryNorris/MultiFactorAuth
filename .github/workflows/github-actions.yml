@@ -7,5 +7,5 @@ jobs:
       - uses: actions/checkout@v1
       - name: Run Unit Tests
         run: |
-        chmod +x ./server/gradlew
-        ./server/gradlew -p server tests
+          chmod +x ./server/gradlew
+          ./server/gradlew -p server tests
