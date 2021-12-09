@@ -17,14 +17,17 @@ fun Application.configureSecurity() {
             val domain = environment.config.property("jwt.domain").getString()
             val secret = environment.config.property("jwt.secret").getString()
             realm = environment.config.property("jwt.realm").getString()
-            verifier(
-                JWT.require(Algorithm.HMAC256(secret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(domain)
-                    .build()
-            )
-            validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+            //Provide no validation if we have not set all the parameters.
+            if(jwtAudience.isNotEmpty() && domain.isNotEmpty() && secret.isNotEmpty()) {
+                verifier(
+                    JWT.require(Algorithm.HMAC256(secret))
+                        .withAudience(jwtAudience)
+                        .withIssuer(domain)
+                        .build()
+                )
+                validate { credential ->
+                    if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+                }
             }
         }
     }

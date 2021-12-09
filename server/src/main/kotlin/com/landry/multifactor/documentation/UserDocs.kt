@@ -47,3 +47,7 @@ val getUserByEmailDocs = MethodInfo.GetInfo(
     securitySchemes = setOf("jwt"),
     tags = setOf("users")
 )
+
+val rootDocs = MethodInfo.GetInfo<Unit, Unit>(
+    summary = "Get the name of the API"
+)

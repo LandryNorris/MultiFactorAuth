@@ -53,7 +53,7 @@ class UserRepository(private val dataSource: AbstractUsersDataSource) {
 
             val hash = argon2.hash(numIterations, HASH_MEMORY, HASH_PARALLELISM, password.toCharArray())
             val iv = EncryptionHelper.generateIV().base64Encode()
-            val user = User("", email, firstName, lastName, hash, iv)
+            val user = User("", email, firstName, lastName, hash, iv, false, false)
             val userResponse = dataSource.registerUser(user.encrypt())
             user.id = userResponse.id
 

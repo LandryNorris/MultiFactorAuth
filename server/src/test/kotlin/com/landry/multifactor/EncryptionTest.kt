@@ -43,7 +43,7 @@ class EncryptionTest {
     fun testEncryptingDecryptingUser() {
         val key = EncryptionHelper.generateKey()
         val iv = EncryptionHelper.generateIV().base64Encode()
-        val user = User("", "email@email.test", "Landry", "Norris", "A Password", iv)
+        val user = User("", "email@email.test", "Landry", "Norris", "A Password", iv, isActive = false, isVerified = false)
 
         val encryptedUser = user.encrypt(key)
         assertEquals(user.iv, encryptedUser.iv)

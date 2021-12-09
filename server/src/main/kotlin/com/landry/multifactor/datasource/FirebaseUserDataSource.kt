@@ -16,16 +16,16 @@ class FirebaseUserDataSource: AbstractUsersDataSource() {
     private val usersReference by lazy { database.collection("users") }
 
     override suspend fun getUserByEmail(email: String): User? {
-        return usersReference.where("email", equalTo = email).await(User.serializer()).firstOrNull()
+        return usersReference.where("email", equalTo = email).await(User.serializer()).firstOrNull()?.decrypt()
     }
 
     override suspend fun getUserById(id: String): UserResponse? {
-        val user = usersReference.document(id).await(User.serializer())
-        return user?.decrypt()?.toUserResponse()
+        val user = usersReference.document(id).await(User.serializer())?.decrypt()
+        return user?.toUserResponse()
     }
 
     override suspend fun registerUser(user: User): UserResponse {
-        val createdUser = usersReference.add(User.serializer(), user).await(User.serializer())!!
+        val createdUser = usersReference.add(User.serializer(), user).await(User.serializer())?.decrypt()!!
         return createdUser.toUserResponse()
     }
 

@@ -1,9 +1,6 @@
 package com.landry.multifactor.plugins
 
-import com.landry.multifactor.datasource.AbstractDeviceDataSource
-import com.landry.multifactor.datasource.AbstractUsersDataSource
-import com.landry.multifactor.datasource.FirebaseDeviceDataSource
-import com.landry.multifactor.datasource.FirebaseUserDataSource
+import com.landry.multifactor.datasource.*
 import com.landry.multifactor.repos.DeviceRepository
 import com.landry.multifactor.repos.UserRepository
 import io.ktor.application.*
@@ -22,5 +19,20 @@ fun Application.configureKoin() {
     }
     install(Koin) {
         modules(mainModule)
+    }
+}
+
+fun Application.configureKoinTest() {
+    val testModule = module {
+        single { environment.config }
+
+        single<AbstractUsersDataSource> { MockUserDataSource() }
+        single { UserRepository(get()) }
+
+        single<AbstractDeviceDataSource> { MockDeviceDataSource() }
+        single { DeviceRepository(get()) }
+    }
+    install(Koin) {
+        modules(testModule)
     }
 }

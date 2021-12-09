@@ -3,7 +3,9 @@ package com.landry.multifactor.routes
 import com.landry.multifactor.documentation.loginDocs
 import com.landry.multifactor.documentation.refreshDocs
 import com.landry.multifactor.documentation.registrationDocs
+import com.landry.multifactor.documentation.rootDocs
 import com.landry.multifactor.exceptions.AuthenticationException
+import com.landry.multifactor.notarizedGetRoute
 import com.landry.multifactor.notarizedPostRoute
 import com.landry.multifactor.params.LoginParams
 import com.landry.multifactor.params.RefreshParams
@@ -32,7 +34,6 @@ fun Route.rootRoutes() {
     }
 
     notarizedPostRoute("/register", registrationDocs) {
-        println("registering user")
         val registrationParams = call.receive<RegistrationParams>()
         val registrationResponse = usersRepo.register(registrationParams)
         call.respond(HttpStatusCode.OK, registrationResponse)
@@ -45,5 +46,9 @@ fun Route.rootRoutes() {
 
             call.respond(response)
         }
+    }
+
+    notarizedGetRoute("/", rootDocs) {
+        call.respondText("MultiFactorAPI")
     }
 }

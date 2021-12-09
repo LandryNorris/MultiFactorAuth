@@ -21,6 +21,7 @@ fun Application.configureStatusPages() {
             call.respondText("Account already exists for ${cause.email}", status = HttpStatusCode.Conflict)
         }
         notarizedException<NullPointerException, Unit>(notFoundExceptionDocs) { cause ->
+            cause.printStackTrace()
             call.respondText(notFoundExceptionDocs.description, status = HttpStatusCode.NotFound)
         }
         notarizedException<IllegalArgumentException, Unit>(illegalArgumentDocs) { cause ->

@@ -8,10 +8,10 @@ import com.landry.multifactor.plugins.*
 class ApplicationTest {
     @Test
     fun testRoot() {
-        withTestApplication({ configureRouting() }) {
+        setupKtorTest {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("Hello World!", response.content)
+                assertEquals("MultiFactorAPI", response.content)
             }
         }
     }
