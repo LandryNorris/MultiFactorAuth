@@ -13,14 +13,14 @@ data class User(@Transient override var id: String = "", var email: String, var 
         val encryptedFirst = EncryptionHelper.encrypt(firstName.toByteArray(), key, iv.toByteArray()).base64Encode()
         val encryptedLast = EncryptionHelper.encrypt(lastName.toByteArray(), key, iv.toByteArray()).base64Encode()
         val encryptedHash = EncryptionHelper.encrypt(passwordHash.toByteArray(), key, iv.toByteArray()).base64Encode()
-        return User(id, email, encryptedFirst, encryptedLast, encryptedHash, iv)
+        return User(id, email, encryptedFirst, encryptedLast, encryptedHash, iv, isActive, isVerified)
     }
 
     fun decrypt(key: SecretKey = EncryptionHelper.encryptionKeyStrong): User {
         val decryptedFirst = EncryptionHelper.decrypt(firstName.base64Decode(), key, iv.toByteArray())
         val decryptedLast = EncryptionHelper.decrypt(lastName.base64Decode(), key, iv.toByteArray())
         val decryptedPasswordHash = EncryptionHelper.decrypt(passwordHash.base64Decode(), key, iv.toByteArray())
-        return User(id, email, decryptedFirst, decryptedLast, decryptedPasswordHash, iv)
+        return User(id, email, decryptedFirst, decryptedLast, decryptedPasswordHash, iv, isActive, isVerified)
     }
 
     fun decryptPasswordHash(): String {
