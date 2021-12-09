@@ -4,4 +4,7 @@ jobs:
   server-tests:
     runs-on: ubuntu-latest
     steps:
-      - run: ./server/gradlew tests
+      - uses: actions/checkout@v1
+      - run: |
+        chmod +x ./server/gradlew
+        ./server/gradlew -p server tests
