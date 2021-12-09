@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: |
+      - name: Run Unit Tests
+        run: |
         chmod +x ./server/gradlew
         ./server/gradlew -p server tests
