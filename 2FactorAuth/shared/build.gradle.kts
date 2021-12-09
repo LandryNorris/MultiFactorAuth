@@ -5,11 +5,13 @@ val jsonVersion: String by project
 val coroutinesVersion: String by project
 val decomposeVersion: String by project
 val connectivityStatusVersion: String by project
+val logVersion: String by project
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.6.0"
+    id("kotlin-parcelize") // Apply the plugin for Android
+    kotlin("plugin.serialization") version "1.5.31"
 }
 
 group = "me.landry"
@@ -35,7 +37,9 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$jsonVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
-                implementation("com.github.ln-12:multiplatform-connectivity-status:$connectivityStatusVersion")
+                //implementation("com.github.hadilq:log4k-metadata:$logVersion")
+                implementation("org.lighthousegames:logging:$logVersion")
+                //implementation("com.github.ln-12:multiplatform-connectivity-status:$connectivityStatusVersion")
             }
         }
         val commonTest by getting {
@@ -46,7 +50,6 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("com.google.android.material:material:1.4.0")
-                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
             }
         }
         val androidTest by getting {

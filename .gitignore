@@ -8,3 +8,5 @@ server/.idea
 2FactorAuth/.idea
 2FactorAuth/local.properties
 2FactorAuth/build
+**/*.hprof
+server/src/main/resources/secure/*
