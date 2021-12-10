@@ -24,7 +24,7 @@ application {
 appengine {
     deploy {
         version = "1"
-        projectId = "2FA-kotlin"
+        projectId = "skilled-curve-329023"
         stopPreviousVersion = true
     }
     val jarFile = File("build/libs/$baseJarName-$version-all.jar")

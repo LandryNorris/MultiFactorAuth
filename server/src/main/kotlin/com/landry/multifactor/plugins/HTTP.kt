@@ -1,6 +1,5 @@
 package com.landry.multifactor.plugins
 
-import io.bkbn.kompendium.models.oas.OpenApiSpec
 import io.ktor.features.*
 import io.ktor.http.content.*
 import io.ktor.http.*
@@ -33,7 +32,7 @@ fun Application.configureHTTP() {
         method(HttpMethod.Patch)
         header(HttpHeaders.Authorization)
         allowCredentials = true
-        anyHost()
+        host("localhost:8080")
     }
     install(DefaultHeaders) {
         header("X-Engine", "Ktor") // will send this header with each response

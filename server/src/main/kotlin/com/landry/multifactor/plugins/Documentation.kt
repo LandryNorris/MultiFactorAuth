@@ -29,6 +29,7 @@ val openApiSpec = Kompendium.openApiSpec.copy(
         description = "An API for multifactor authentication"
     ),
     servers = mutableListOf(
-        OpenApiSpecServer(URI("http://localhost:8080"))
+        OpenApiSpecServer(URI("http://localhost:8080")),
+        OpenApiSpecServer(URI("https://skilled-curve-329023.uc.r.appspot.com/"))
     )
 )
