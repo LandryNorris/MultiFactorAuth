@@ -11,7 +11,7 @@ version = "1.0-SNAPSHOT"
 
 dependencies {
     implementation(project(":shared"))
-    implementation("com.google.android.material:material:1.2.1")
+    implementation("com.google.android.material:material:1.4.0")
     implementation(compose.runtime)
     implementation(compose.foundation)
     implementation(compose.material)
@@ -20,7 +20,7 @@ dependencies {
     implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
     implementation("androidx.activity:activity-compose:1.4.0")
-    //implementation("androidx.compose.ui:ui-tooling:1.0.5")
+    implementation("androidx.compose.ui:ui-tooling:1.0.5")
 }
 
 android {

@@ -10,3 +10,4 @@ server/.idea
 2FactorAuth/build
 **/*.hprof
 server/src/main/resources/secure/*
+.gradle/

@@ -6,7 +6,6 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.reduce
 import com.landry.shared.http.Client
 import com.landry.shared.http.exceptions.AuthenticationException
-import com.landry.shared.log
 import com.landry.shared.models.User
 import com.landry.shared.services.LoginService
 import io.ktor.client.features.auth.providers.*

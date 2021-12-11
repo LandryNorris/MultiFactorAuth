@@ -6,12 +6,16 @@ val coroutinesVersion: String by project
 val decomposeVersion: String by project
 val connectivityStatusVersion: String by project
 val logVersion: String by project
+val kryptoVersion: String by project
+val fileVersion: String by project
+val sqlVersion: String by project
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("kotlin-parcelize") // Apply the plugin for Android
     kotlin("plugin.serialization") version "1.5.31"
+    id("com.squareup.sqldelight")
 }
 
 group = "me.landry"
@@ -37,9 +41,9 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$jsonVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
-                //implementation("com.github.hadilq:log4k-metadata:$logVersion")
                 implementation("org.lighthousegames:logging:$logVersion")
-                //implementation("com.github.ln-12:multiplatform-connectivity-status:$connectivityStatusVersion")
+                implementation("com.soywiz.korlibs.krypto:krypto:$kryptoVersion")
+                implementation("com.squareup.sqldelight:runtime:$sqlVersion")
             }
         }
         val commonTest by getting {
@@ -49,25 +53,30 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
+                implementation("com.squareup.sqldelight:android-driver:$sqlVersion")
                 implementation("com.google.android.material:material:1.4.0")
             }
         }
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13")
+                implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("com.squareup.sqldelight:native-driver:$sqlVersion")
+            }
+        }
         val iosTest by getting
     }
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(29)
+        minSdk = 24
+        targetSdk = 31
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -89,3 +98,9 @@ val packForXcode by tasks.creating(Sync::class) {
 }
 
 tasks.getByName("build").dependsOn(packForXcode)
+
+sqldelight {
+    database("OtpDatabase") {
+        packageName = "com.landry.multifactor"
+    }
+}

@@ -22,7 +22,7 @@ import io.ktor.http.*
 class Client {
     companion object {
         var bearerTokens: BearerTokens? = null
-        val baseUrl = "http://10.0.2.2:8080"
+        val baseUrl = "https://skilled-curve-329023.uc.r.appspot.com/"
         val client = HttpClient {
             installJson()
             install(Logging)
