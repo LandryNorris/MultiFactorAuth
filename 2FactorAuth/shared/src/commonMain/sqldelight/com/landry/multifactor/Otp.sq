@@ -1,6 +1,22 @@
 CREATE TABLE otp(
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
-	secret TEXT NOT NULL
+	secret TEXT NOT NULL,
+	counter INTEGER
 );
 
+getById:
+SELECT * FROM otp WHERE id = ?;
+
+insert:
+INSERT INTO otp(id, name, secret, counter)
+VALUES (?, ?, ? ,?);
+
+updateSecretById:
+UPDATE otp SET secret = ? WHERE id = ?;
+
+selectAllOtp:
+SELECT * FROM otp;
+
+lastInsertRowId:
+SELECT last_insert_rowid();

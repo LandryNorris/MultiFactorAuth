@@ -44,6 +44,7 @@ kotlin {
                 implementation("org.lighthousegames:logging:$logVersion")
                 implementation("com.soywiz.korlibs.krypto:krypto:$kryptoVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlVersion")
+                implementation("com.squareup.sqldelight:coroutines-extensions:$sqlVersion")
             }
         }
         val commonTest by getting {
