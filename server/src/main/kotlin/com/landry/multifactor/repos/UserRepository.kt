@@ -28,8 +28,7 @@ class UserRepository(private val dataSource: AbstractUsersDataSource) {
 
     suspend fun login(email: String, password: String): LoginResponse? {
         val user = getUserByEmail(email) ?: return null
-        val decryptedPasswordHash = user.decryptPasswordHash()
-        val passwordVerified = argon2.verify(decryptedPasswordHash, password.toCharArray())
+        val passwordVerified = argon2.verify(user.passwordHash, password.toCharArray())
         if(!passwordVerified) return null
 
         val accessToken = TokenGenerator.generate(user.email)
@@ -61,5 +60,5 @@ class UserRepository(private val dataSource: AbstractUsersDataSource) {
         }
     }
 
-    suspend fun getUserByEmail(email: String) = dataSource.getUserByEmail(email)
+    suspend fun getUserByEmail(email: String) = dataSource.getUserByEmail(email)?.decrypt()
 }

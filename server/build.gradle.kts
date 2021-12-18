@@ -56,7 +56,7 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.gitlive:firebase-database-jvm:1.4.3")
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("io.bkbn:kompendium-core:$docsVersion")
     implementation("io.bkbn:kompendium-auth:$docsVersion")
     implementation("io.bkbn:kompendium-swagger-ui:$docsVersion")
