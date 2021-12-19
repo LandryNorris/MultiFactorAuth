@@ -7,8 +7,8 @@ val docsVersion: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.6.0"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.0"
+    kotlin("jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
     id("com.google.cloud.tools.appengine") version "2.4.2"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
