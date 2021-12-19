@@ -11,6 +11,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
     id("com.google.cloud.tools.appengine") version "2.4.2"
     id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("io.gitlab.arturbosch.detekt") version "1.19.0"
 }
 
 val baseJarName = "MultiFactorServer"
@@ -76,4 +77,6 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
 }
