@@ -13,6 +13,7 @@ plugins {
     id("com.google.cloud.tools.appengine") version "2.4.2"
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("org.jetbrains.kotlinx.kover") version "0.4.4"
 }
 
 val baseJarName = "MultiFactorServer"
@@ -42,6 +43,15 @@ tasks {
         }
     }
 
+    test {
+        kover {
+            configure<kotlinx.kover.api.KoverTaskExtension> {
+                coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
+                includes = listOf("com\\.landry\\.multifactor\\..*")
+            }
+        }
+    }
+
     build {
         dependsOn(shadowJar)
     }
@@ -51,12 +61,29 @@ tasks {
     }
 
     appengineDeploy {
-        dependsOn(test)
+        dependsOn(koverReport)
+    }
+
+    koverHtmlReport {
+        isEnabled = true
+        htmlReportDir.set(layout.buildDirectory.dir("coverage/html"))
+    }
+
+    koverXmlReport {
+        isEnabled = false
+    }
+
+    koverCollectReports {
+        outputDir.set(layout.buildDirectory.dir("coverage") )
+    }
+
+    val verify by creating {
+        dependsOn(detekt)
+        dependsOn(koverReport)
     }
 
     val deploy by creating {
-        dependsOn(detekt)
-        dependsOn(test)
+        dependsOn(verify)
         dependsOn(appengineDeploy)
     }
 }
