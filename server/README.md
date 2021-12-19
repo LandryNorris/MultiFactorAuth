@@ -23,3 +23,9 @@ identity. The server sends a challenge to the verifier device to confirm
 its identity.
 6. Once the identity of the verifier is confirmed, the server will inform 
 the original device that it is safe to authenticate.
+
+Note on CVE-2021-44228 and CVE-2021-45046
+=========================================
+
+This project uses Logback for logging, so it is not affected by the Log4J 
+CVEs.

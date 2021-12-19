@@ -5,7 +5,6 @@ import com.landry.multifactor.firebaseApp
 import com.landry.multifactor.models.User
 import com.landry.multifactor.responses.UserResponse
 import com.landry.multifactor.responses.toUserResponse
-import com.landry.multifactor.utils.EncryptionHelper
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.firestore.where

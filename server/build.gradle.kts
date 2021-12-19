@@ -50,18 +50,16 @@ tasks {
 }
 
 repositories {
-    mavenLocal()
     google()
     mavenCentral()
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("firebase-*-jvm-*.jar"))))
     implementation("io.bkbn:kompendium-core:$docsVersion")
     implementation("io.bkbn:kompendium-auth:$docsVersion")
     implementation("io.bkbn:kompendium-swagger-ui:$docsVersion")
     implementation("de.mkammerer:argon2-jvm:2.11")
-    implementation("dev.gitlive:firebase-firestore-jvm:1.4.3")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.ktor:ktor-server-core:$ktor_version")
