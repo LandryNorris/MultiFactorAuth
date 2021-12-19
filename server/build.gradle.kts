@@ -49,6 +49,10 @@ tasks {
         dependsOn(shadowJar)
     }
 
+    appengineDeploy {
+        dependsOn(test)
+    }
+
     val deploy by creating {
         dependsOn(detekt)
         dependsOn(test)
