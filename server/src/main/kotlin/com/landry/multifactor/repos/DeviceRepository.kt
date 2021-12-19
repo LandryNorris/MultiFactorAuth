@@ -11,6 +11,7 @@ import com.landry.multifactor.utils.EncryptionHelper
 import com.landry.multifactor.utils.SecretGenerator
 
 class DeviceRepository(private val dataSource: AbstractDeviceDataSource) {
+
     suspend fun registerDevice(params: DeviceParams): CreateDeviceResponse? {
         val secret = SecretGenerator.generate()
         val iv = EncryptionHelper.generateIV().base64Encode()
@@ -19,9 +20,16 @@ class DeviceRepository(private val dataSource: AbstractDeviceDataSource) {
         device.id = deviceResponse.deviceId
         return CreateDeviceResponse(device.toResponse(), secret)
     }
+
     suspend fun getDevice(id: String) = dataSource.getDeviceById(id)
 
-    suspend fun queryDevices(params: QueryDeviceParams) = dataSource.queryDevices(params)
+    suspend fun queryDevices(params: QueryDeviceParams): List<Device> {
+        params.run {
+            if(listOf<Any?>(userId, mac, active).all { it == null })
+                throw IllegalArgumentException("No parameters provided")
+        }
+        return dataSource.queryDevices(params)
+    }
 
     /**
      * Deactivate a given device. Throws a NullPointerException if the device does not exist.

@@ -58,8 +58,7 @@ private fun Route.baseDeviceRoutes(repo: DeviceRepository) {
         val userId = call.parameters["userId"]
         val mac = call.parameters["mac"]
         val isActive = call.parameters["isActive"]?.lowercase()?.toBooleanStrictOrNull()
-        val name = call.parameters["name"]
-        val devices = repo.queryDevices(QueryDeviceParams(userId, mac, name, isActive))
+        val devices = repo.queryDevices(QueryDeviceParams(userId, mac, isActive))
             .map { it.decrypt().toResponse() }
         call.respond(devices)
     }

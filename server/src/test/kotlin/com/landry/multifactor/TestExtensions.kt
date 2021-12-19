@@ -1,9 +1,13 @@
 package com.landry.multifactor
 
+import com.landry.multifactor.models.Device
+import com.landry.multifactor.params.DeviceParams
 import com.landry.multifactor.plugins.*
+import io.github.serpro69.kfaker.faker
 import io.ktor.application.*
 import io.ktor.config.*
 import io.ktor.server.testing.*
+import java.util.*
 
 fun Application.setup() {
     configureKoinTest()
@@ -28,3 +32,26 @@ fun <R> setupKtorTest(test: TestApplicationEngine.() -> R) {
         test()
     }
 }
+
+val faker = faker {  }
+
+fun randomDeviceParams() = DeviceParams(
+    randomMacAddress(),
+    randomId(),
+    faker.device.modelName())
+
+fun randomNewDevice() = Device(
+    id = "",
+    mac = randomMacAddress(),
+    userId = randomId(),
+    deviceName = faker.device.modelName(),
+    secret = "",
+    iv = "",
+    isActive = false
+)
+
+fun randomId() = faker.random.randomString(length = 20, locale = Locale.US)
+
+fun randomHexByteString() = faker.random.nextInt(256).toString(16)
+
+fun randomMacAddress() = (0 until 6).joinToString(separator = ":") { randomHexByteString() }

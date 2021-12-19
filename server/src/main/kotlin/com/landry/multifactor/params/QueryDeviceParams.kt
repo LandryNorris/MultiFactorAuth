@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class QueryDeviceParams(
-    @KompendiumParam(ParamType.QUERY) val userId: String?,
-    @KompendiumParam(ParamType.QUERY) val mac: String?,
-    @KompendiumParam(ParamType.QUERY) val name: String?,
-    @KompendiumParam(ParamType.QUERY) val isActive: Boolean?)
+    @KompendiumParam(ParamType.QUERY) val userId: String? = null,
+    @KompendiumParam(ParamType.QUERY) val mac: String? = null,
+    @KompendiumParam(ParamType.QUERY) val active: Boolean? = null
+)

@@ -34,12 +34,9 @@ class FirebaseDeviceDataSource: AbstractDeviceDataSource {
     }
 
     override suspend fun queryDevices(params: QueryDeviceParams): List<Device> = params.run {
-        if(listOf<Any?>(userId, mac, name, isActive).all { it == null })
-            throw IllegalArgumentException("No parameters provided")
-
-        return devices.whereIfNotNull("userId", userId).whereIfNotNull("mac", mac)
-            .whereIfNotNull("deviceName", name)
-            .whereIfNotNull("isActive", isActive).await(Device.serializer())
+        return devices.whereIfNotNull("userId", userId)
+            .whereIfNotNull("mac", mac)
+            .whereIfNotNull("isActive", active).await(Device.serializer())
     }
 
     private fun Query.whereIfNotNull(field: String, equalTo: Any?): Query {

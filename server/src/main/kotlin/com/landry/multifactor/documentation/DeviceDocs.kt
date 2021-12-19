@@ -38,7 +38,7 @@ val createDeviceDocs = MethodInfo.PostInfo<Unit, DeviceParams, DeviceResponse>(
 
 val queryDevicesDocs = MethodInfo.GetInfo(
     summary = "Get a list of devices matching the given queries",
-    parameterExamples = mapOf("example" to QueryDeviceParams(null, null, null, null)),
+    parameterExamples = mapOf("example" to QueryDeviceParams(null, null, null)),
     responseInfo = ResponseInfo(HttpStatusCode.OK,
         "Devices matching queries",
         examples = mapOf("example" to exampleDevicesList)),

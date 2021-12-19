@@ -5,6 +5,7 @@ val metricsVersion: String by project
 val koinVersion: String by project
 val docsVersion: String by project
 val argonVersion: String by project
+val fakerVersion: String by project
 
 plugins {
     application
@@ -115,4 +116,5 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
+    testImplementation("io.github.serpro69:kotlin-faker:$fakerVersion")
 }

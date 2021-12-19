@@ -17,6 +17,7 @@ import org.koin.core.context.GlobalContext
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
+import javax.crypto.SecretKey
 
 suspend fun <T> DocumentReference.await(strategy: DeserializationStrategy<T>): T? {
     val snapshot = get()
@@ -48,5 +49,6 @@ inline fun <reified T : Any> inject() = koin.inject<T>()
 
 fun LocalDateTime.toDate(): Date = Date.from(toInstant(ZoneOffset.UTC))
 
+fun SecretKey.base64Encoded() = encoded.base64Encode()
 fun ByteArray.base64Encode() = Base64.getEncoder().encode(this).decodeToString()
 fun String.base64Decode(): ByteArray = Base64.getDecoder().decode(this)

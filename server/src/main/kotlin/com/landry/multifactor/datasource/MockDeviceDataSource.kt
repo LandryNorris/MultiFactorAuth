@@ -26,14 +26,12 @@ class MockDeviceDataSource: AbstractDeviceDataSource {
     }
 
     override suspend fun queryDevices(params: QueryDeviceParams): List<Device> {
-        return devices.filter { device ->
+        return devices.map { it.decrypt() }.filter { device ->
             params.userId?.run {
                 device.userId == this
-            } ?: true && params.name?.run {
-                device.deviceName == this
             } ?: true && params.mac?.run {
                 device.mac == this
-            } ?: true && params.isActive?.run {
+            } ?: true && params.active?.run {
                 device.isActive == this
             } ?: true
         }
