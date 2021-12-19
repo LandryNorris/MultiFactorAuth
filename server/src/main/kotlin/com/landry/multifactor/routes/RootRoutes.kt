@@ -11,12 +11,13 @@ import com.landry.multifactor.params.LoginParams
 import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.repos.UserRepository
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.application.call
+import io.ktor.auth.authenticate
+import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
+import io.ktor.response.respond
+import io.ktor.response.respondText
+import io.ktor.routing.Route
 import org.koin.ktor.ext.inject
 
 fun Route.rootRoutes() {

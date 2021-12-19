@@ -3,9 +3,9 @@ package com.landry.multifactor.utils
 import java.util.*
 import javax.crypto.KeyGenerator
 
-class SecretGenerator {
+class SecretGenerator private constructor(){
     companion object {
-        const val ALGORITHM = "HmacSHA512"
+        private const val ALGORITHM = "HmacSHA512"
 
         fun generate(): String {
             val keyFactory = KeyGenerator.getInstance(ALGORITHM)

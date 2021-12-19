@@ -11,8 +11,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-
-class EncryptionHelper {
+class EncryptionHelper private constructor() {
     companion object {
         private const val AES_KEY_SIZE = 256
         private const val GCM_IV_LENGTH = 12
@@ -29,7 +28,8 @@ class EncryptionHelper {
         fun encryptStrong(plainText: ByteArray, iv: ByteArray) = encrypt(plainText, encryptionKeyStrong, iv)
         fun decryptStrong(plainText: ByteArray, iv: ByteArray) = decrypt(plainText, encryptionKeyStrong, iv)
 
-        fun encrypt(plainText: ByteArray, key: SecretKey, iv: ByteArray, algorithm: String = ALGORITHM, keyAlgorithm: String = KEY_ALOGRITHM): ByteArray {
+        fun encrypt(plainText: ByteArray, key: SecretKey, iv: ByteArray,
+                    algorithm: String = ALGORITHM, keyAlgorithm: String = KEY_ALOGRITHM): ByteArray {
             val cipher = Cipher.getInstance(algorithm)
             val keySpec = SecretKeySpec(key.encoded, keyAlgorithm)
             val gcmParameterSpec = GCMParameterSpec(GCM_TAG_LENGTH, iv)
@@ -38,7 +38,8 @@ class EncryptionHelper {
             return cipher.doFinal(plainText)
         }
 
-        fun decrypt(encrypted: ByteArray, key: SecretKey, iv: ByteArray, algorithm: String = ALGORITHM, keyAlgorithm: String = KEY_ALOGRITHM): String {
+        fun decrypt(encrypted: ByteArray, key: SecretKey, iv: ByteArray,
+                    algorithm: String = ALGORITHM, keyAlgorithm: String = KEY_ALOGRITHM): String {
             val cipher = Cipher.getInstance(algorithm)
             val keySpec = SecretKeySpec(key.encoded, keyAlgorithm)
             val gcmParameterSpec = GCMParameterSpec(GCM_TAG_LENGTH, iv)

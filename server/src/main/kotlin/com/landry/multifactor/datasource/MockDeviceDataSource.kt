@@ -5,7 +5,7 @@ import com.landry.multifactor.params.QueryDeviceParams
 import com.landry.multifactor.responses.DeviceResponse
 import com.landry.multifactor.responses.toResponse
 
-class MockDeviceDataSource: AbstractDeviceDataSource() {
+class MockDeviceDataSource: AbstractDeviceDataSource {
     private var devices = mutableListOf<Device>()
 
     override suspend fun registerDevice(device: Device): DeviceResponse? {

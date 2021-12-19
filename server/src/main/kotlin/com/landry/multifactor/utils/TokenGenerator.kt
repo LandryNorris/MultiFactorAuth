@@ -9,7 +9,7 @@ import io.ktor.config.*
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-class TokenGenerator {
+class TokenGenerator private constructor() {
     companion object {
         private val config by inject<ApplicationConfig>()
         fun generate(email: String): String {
@@ -25,10 +25,17 @@ class TokenGenerator {
                 .sign(Algorithm.HMAC256(secret))
         }
 
-        private fun buildJWT(email: String, durationHours: Long = 0, durationDays: Long = 0, durationMonths: Long = 0): JWTCreator.Builder {
+        private fun buildJWT(email: String,
+                             durationHours: Long = 0,
+                             durationDays: Long = 0,
+                             durationMonths: Long = 0): JWTCreator.Builder {
             val jwtAudience = config.property("jwt.audience").getString()
             val domain = config.property("jwt.domain").getString()
-            val expiresAt = LocalDateTime.now(ZoneOffset.UTC).plusHours(durationHours).plusDays(durationDays).plusMonths(durationMonths).toDate()
+            val expiresAt = LocalDateTime.now(ZoneOffset.UTC)
+                .plusHours(durationHours)
+                .plusDays(durationDays)
+                .plusMonths(durationMonths).toDate()
+
             return JWT.create()
                 .withClaim("email", email)
                 .withAudience(jwtAudience)

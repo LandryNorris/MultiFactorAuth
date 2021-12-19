@@ -48,6 +48,12 @@ tasks {
     appengineStage {
         dependsOn(shadowJar)
     }
+
+    val deploy by creating {
+        dependsOn(detekt)
+        dependsOn(test)
+        dependsOn(appengineDeploy)
+    }
 }
 
 repositories {
@@ -77,6 +83,4 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
 }

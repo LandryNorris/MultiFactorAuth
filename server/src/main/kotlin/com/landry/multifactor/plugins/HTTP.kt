@@ -9,18 +9,20 @@ fun Application.configureHTTP() {
     install(CachingHeaders) {
         options { outgoingContent ->
             when (outgoingContent.contentType?.withoutParameters()) {
-                ContentType.Text.CSS -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 24 * 60 * 60))
+                ContentType.Text.CSS -> CachingOptions(
+                    CacheControl.MaxAge(maxAgeSeconds = HTTPConfig.Caching.maxAgeSeconds)
+                )
                 else -> null
             }
         }
     }
     install(Compression) {
         gzip {
-            priority = 1.0
+            priority = HTTPConfig.Compression.Gzip.priority
         }
         deflate {
-            priority = 10.0
-            minimumSize(1024) // condition
+            priority = HTTPConfig.Compression.Deflate.priority
+            minimumSize(HTTPConfig.Compression.Deflate.minSize)
         }
     }
 
@@ -32,14 +34,42 @@ fun Application.configureHTTP() {
         method(HttpMethod.Patch)
         header(HttpHeaders.Authorization)
         allowCredentials = true
-        host("localhost:8080")
+        host(HTTPConfig.Cors.host)
     }
     install(DefaultHeaders) {
-        header("X-Engine", "Ktor") // will send this header with each response
+        header("X-Engine", HTTPConfig.DefaultHeaders.engine)
     }
     install(PartialContent) {
         // Maximum number of ranges that will be accepted from an HTTP request.
         // If the HTTP request specifies more ranges, they will all be merged into a single range.
-        maxRangeCount = 10
+        maxRangeCount = HTTPConfig.PartialContent.maxRangeCount
+    }
+}
+
+object HTTPConfig {
+    object Caching {
+        const val maxAgeSeconds = 24 * 60 * 60
+    }
+
+    object Compression {
+        object Gzip {
+            const val priority = 1.0
+        }
+        object Deflate {
+            const val priority = 10.0
+            const val minSize = 1024L
+        }
+    }
+
+    object Cors {
+        const val host = "localhost:8080"
+    }
+
+    object PartialContent {
+        const val maxRangeCount = 10
+    }
+
+    object DefaultHeaders {
+        const val engine = "Ktor"
     }
 }

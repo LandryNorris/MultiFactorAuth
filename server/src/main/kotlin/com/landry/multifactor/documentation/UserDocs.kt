@@ -14,8 +14,6 @@ import io.bkbn.kompendium.models.meta.RequestInfo
 import io.bkbn.kompendium.models.meta.ResponseInfo
 import io.ktor.http.*
 
-data class GetUserByEmail(@KompendiumParam(ParamType.QUERY) val email: String)
-
 val loginExample = LoginParams("email", "password")
 val registrationExample = RegistrationParams("email", "first", "last", "password")
 val exampleUserResponse = UserResponse("id", "first", "last", "email")
@@ -42,7 +40,9 @@ val refreshDocs = MethodInfo.PostInfo<Unit, RefreshParams, RefreshResponse>(
 val getUserByEmailDocs = MethodInfo.GetInfo(
     summary = "Get a user by email",
     parameterExamples = mapOf("example" to GetUserByEmail("email")),
-    responseInfo = ResponseInfo(HttpStatusCode.OK, "User with given email", examples = mapOf("example" to exampleUserResponse)),
+    responseInfo = ResponseInfo(HttpStatusCode.OK,
+        description = "User with given email",
+        examples = mapOf("example" to exampleUserResponse)),
     canThrow = setOf(IllegalArgumentException::class, NullPointerException::class),
     securitySchemes = setOf("jwt"),
     tags = setOf("users")
@@ -51,3 +51,5 @@ val getUserByEmailDocs = MethodInfo.GetInfo(
 val rootDocs = MethodInfo.GetInfo<Unit, Unit>(
     summary = "Get the name of the API"
 )
+
+data class GetUserByEmail(@KompendiumParam(ParamType.QUERY) val email: String)
