@@ -31,13 +31,15 @@ suspend fun <T> Query.await(strategy: DeserializationStrategy<T>): List<T> {
     return get().documents.mapNotNull { it.await(strategy) }
 }
 
-inline fun <reified T: Any, reified S: Any> Route.notarizedGetRoute(path: String, docs: MethodInfo.GetInfo<T, S>,
-                                                                    noinline body: PipelineInterceptor<Unit, ApplicationCall>) = route(path) {
+inline fun <reified T: Any, reified S: Any>
+        Route.notarizedGetRoute(path: String, docs: MethodInfo.GetInfo<T, S>,
+                                noinline body: PipelineInterceptor<Unit, ApplicationCall>) = route(path) {
     notarizedGet(docs, body)
 }
 
-inline fun <reified T: Any, reified S: Any, reified R: Any> Route.notarizedPostRoute(path: String, docs: MethodInfo.PostInfo<T, S, R>,
-                                                                                     noinline body: PipelineInterceptor<Unit, ApplicationCall>) = route(path) {
+inline fun <reified T: Any, reified S: Any, reified R: Any>
+        Route.notarizedPostRoute(path: String, docs: MethodInfo.PostInfo<T, S, R>,
+                                 noinline body: PipelineInterceptor<Unit, ApplicationCall>) = route(path) {
     notarizedPost(docs, body)
 }
 

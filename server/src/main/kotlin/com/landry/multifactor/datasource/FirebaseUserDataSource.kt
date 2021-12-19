@@ -9,7 +9,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.firestore.where
 
-class FirebaseUserDataSource: AbstractUsersDataSource() {
+class FirebaseUserDataSource: AbstractUsersDataSource {
     private val database by lazy { Firebase.firestore(firebaseApp) }
 
     private val usersReference by lazy { database.collection("users") }

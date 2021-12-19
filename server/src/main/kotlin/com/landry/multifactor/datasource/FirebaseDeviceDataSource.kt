@@ -11,7 +11,7 @@ import dev.gitlive.firebase.firestore.Query
 import dev.gitlive.firebase.firestore.firestore
 import dev.gitlive.firebase.firestore.where
 
-class FirebaseDeviceDataSource: AbstractDeviceDataSource() {
+class FirebaseDeviceDataSource: AbstractDeviceDataSource {
     private val firestore by lazy { Firebase.firestore(firebaseApp) }
     private val devices by lazy { firestore.collection("devices") }
 
@@ -34,9 +34,12 @@ class FirebaseDeviceDataSource: AbstractDeviceDataSource() {
     }
 
     override suspend fun queryDevices(params: QueryDeviceParams): List<Device> = params.run {
-        if(listOf<Any?>(userId, mac, name, isActive).all { it == null }) throw IllegalArgumentException()
+        if(listOf<Any?>(userId, mac, name, isActive).all { it == null })
+            throw IllegalArgumentException("No parameters provided")
+
         return devices.whereIfNotNull("userId", userId).whereIfNotNull("mac", mac)
-            .whereIfNotNull("deviceName", name).whereIfNotNull("isActive", isActive).await(Device.serializer())
+            .whereIfNotNull("deviceName", name)
+            .whereIfNotNull("isActive", isActive).await(Device.serializer())
     }
 
     private fun Query.whereIfNotNull(field: String, equalTo: Any?): Query {

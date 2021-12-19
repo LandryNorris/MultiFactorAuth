@@ -4,7 +4,7 @@ import com.landry.multifactor.models.User
 import com.landry.multifactor.responses.UserResponse
 import com.landry.multifactor.responses.toUserResponse
 
-class MockUserDataSource: AbstractUsersDataSource() {
+class MockUserDataSource: AbstractUsersDataSource {
     private val users = arrayListOf<User>()
     override suspend fun getUserByEmail(email: String): User? {
         return users.firstOrNull { it.email == email }

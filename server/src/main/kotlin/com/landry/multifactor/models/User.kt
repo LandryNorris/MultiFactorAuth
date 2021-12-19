@@ -8,7 +8,9 @@ import kotlinx.serialization.Transient
 import javax.crypto.SecretKey
 
 @Serializable
-data class User(@Transient override var id: String = "", var email: String, var firstName: String, var lastName: String, val passwordHash: String, val iv: String, val isActive: Boolean, val isVerified: Boolean): IdAble {
+data class User(@Transient override var id: String = "", var email: String, var firstName: String,
+                var lastName: String, val passwordHash: String, val iv: String,
+                val isActive: Boolean, val isVerified: Boolean): IdAble {
     fun encrypt(key: SecretKey = EncryptionHelper.encryptionKeyStrong): User {
         val encryptedFirst = EncryptionHelper.encrypt(firstName.toByteArray(), key, iv.toByteArray()).base64Encode()
         val encryptedLast = EncryptionHelper.encrypt(lastName.toByteArray(), key, iv.toByteArray()).base64Encode()

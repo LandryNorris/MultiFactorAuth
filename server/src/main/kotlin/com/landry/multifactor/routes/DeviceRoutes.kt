@@ -11,12 +11,13 @@ import com.landry.multifactor.repos.DeviceRepository
 import com.landry.multifactor.responses.toResponse
 import io.bkbn.kompendium.Notarized.notarizedGet
 import io.bkbn.kompendium.Notarized.notarizedPost
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.application.call
+import io.ktor.auth.authenticate
+import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
+import io.ktor.response.respond
+import io.ktor.routing.Route
+import io.ktor.routing.route
 import org.koin.ktor.ext.inject
 
 fun Route.deviceRoutes() {
@@ -58,7 +59,8 @@ private fun Route.baseDeviceRoutes(repo: DeviceRepository) {
         val mac = call.parameters["mac"]
         val isActive = call.parameters["isActive"]?.lowercase()?.toBooleanStrictOrNull()
         val name = call.parameters["name"]
-        val devices = repo.queryDevices(QueryDeviceParams(userId, mac, name, isActive)).map { it.decrypt().toResponse() }
+        val devices = repo.queryDevices(QueryDeviceParams(userId, mac, name, isActive))
+            .map { it.decrypt().toResponse() }
         call.respond(devices)
     }
 }
