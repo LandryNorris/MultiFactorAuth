@@ -7,6 +7,8 @@ import io.github.serpro69.kfaker.faker
 import io.ktor.application.*
 import io.ktor.config.*
 import io.ktor.server.testing.*
+import kotlinx.coroutines.runBlocking
+import org.koin.dsl.module
 import java.util.*
 
 fun Application.setup() {
@@ -20,16 +22,22 @@ fun Application.setup() {
     configureRouting()
 }
 
-fun <R> setupKtorTest(test: TestApplicationEngine.() -> R) {
+val defaultJwtConfig = mapOf(
+    "jwt.secret" to "abcdefg",
+    "jwt.audience" to "jwt audience",
+    "jwt.realm" to "server",
+    "jwt.domain" to "https://jwt-provider-domain/"
+)
+
+fun <R> runKtorTest(config: Map<String, String> = mapOf(), test: suspend TestApplicationEngine.() -> R) {
     withTestApplication {
         (environment.config as MapApplicationConfig).apply {
-            put("jwt.audience", "")
-            put("jwt.secret", "")
-            put("jwt.domain", "")
-            put("jwt.realm", "")
+            config.forEach { put(it.key, it.value) }
         }
         application.setup()
-        test()
+        runBlocking {
+            test()
+        }
     }
 }
 
@@ -70,3 +78,18 @@ fun randomId() = faker.random.randomString(length = 20, locale = Locale.US)
 fun randomHexByteString() = faker.random.nextInt(256).toString(16)
 
 fun randomMacAddress() = (0 until 6).joinToString(separator = ":") { randomHexByteString() }
+
+
+
+fun startKoinForConfig(config: Map<String, String> = defaultJwtConfig) {
+    val module = module {
+        single<ApplicationConfig> {
+            MapApplicationConfig().apply {
+                config.forEach { put(it.key, it.value) }
+            }
+        }
+    }
+    org.koin.core.context.startKoin {
+        modules(module)
+    }
+}

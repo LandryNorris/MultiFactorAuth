@@ -114,7 +114,9 @@ dependencies {
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-server-cio:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     testImplementation("io.github.serpro69:kotlin-faker:$fakerVersion")
+    testImplementation("io.insert-koin:koin-test-junit4:$koinVersion")
 }

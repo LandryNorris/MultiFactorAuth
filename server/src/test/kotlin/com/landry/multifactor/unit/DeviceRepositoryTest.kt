@@ -7,6 +7,7 @@ import com.landry.multifactor.params.DeviceParams
 import com.landry.multifactor.params.QueryDeviceParams
 import com.landry.multifactor.randomDeviceParams
 import com.landry.multifactor.repos.DeviceRepository
+import com.landry.multifactor.startKoinForConfig
 import com.landry.multifactor.utils.EncryptionHelper
 import io.ktor.config.ApplicationConfig
 import io.ktor.config.MapApplicationConfig
@@ -28,24 +29,13 @@ class DeviceRepositoryTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            startKoin()
+            startKoinForConfig(config = mapOf("encryption.strongKey" to EncryptionHelper.generateKey().base64Encoded()))
         }
 
         @AfterClass
         @JvmStatic
         fun teardown() {
             stopKoin()
-        }
-
-        private fun startKoin() {
-            org.koin.core.context.startKoin {
-                val module = module {
-                    single<ApplicationConfig> {
-                        MapApplicationConfig("encryption.strongKey" to EncryptionHelper.generateKey().base64Encoded())
-                    }
-                }
-                modules(module)
-            }
         }
     }
 

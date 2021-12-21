@@ -2,21 +2,26 @@ package com.landry.multifactor.unit
 
 import com.landry.multifactor.base64Encoded
 import com.landry.multifactor.datasource.MockUserDataSource
+import com.landry.multifactor.defaultJwtConfig
 import com.landry.multifactor.exceptions.EmailAlreadyExistsException
 import com.landry.multifactor.faker
 import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.randomEmail
 import com.landry.multifactor.repos.UserRepository
+import com.landry.multifactor.startKoinForConfig
 import com.landry.multifactor.utils.EncryptionHelper
 import io.ktor.config.ApplicationConfig
 import io.ktor.config.MapApplicationConfig
 import kotlinx.coroutines.runBlocking
 import org.junit.AfterClass
 import org.junit.BeforeClass
+import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.stopKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.koin.test.KoinTestRule
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
@@ -28,30 +33,13 @@ class UserRepositoryTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            startKoin()
+            startKoinForConfig(config = HashMap(defaultJwtConfig).apply { put("encryption.strongKey", EncryptionHelper.generateKey().base64Encoded()) })
         }
 
         @AfterClass
         @JvmStatic
         fun teardown() {
             stopKoin()
-        }
-
-        private fun startKoin() {
-            val module = module {
-                single<ApplicationConfig> {
-                    MapApplicationConfig(
-                        "encryption.strongKey" to EncryptionHelper.generateKey().base64Encoded(),
-                        "jwt.secret" to "abcdefg",
-                        "jwt.audience" to "jwt audience",
-                        "jwt.realm" to "server",
-                        "jwt.domain" to "https://jwt-provider-domain/"
-                    )
-                }
-            }
-            org.koin.core.context.startKoin {
-                modules(module)
-            }
         }
     }
 
