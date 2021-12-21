@@ -8,6 +8,9 @@ import io.ktor.application.*
 import io.ktor.config.*
 import io.ktor.server.testing.*
 import kotlinx.coroutines.runBlocking
+import org.koin.core.qualifier._q
+import org.koin.core.qualifier.named
+import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import java.util.*
 
@@ -78,8 +81,6 @@ fun randomId() = faker.random.randomString(length = 20, locale = Locale.US)
 fun randomHexByteString() = faker.random.nextInt(256).toString(16)
 
 fun randomMacAddress() = (0 until 6).joinToString(separator = ":") { randomHexByteString() }
-
-
 
 fun startKoinForConfig(config: Map<String, String> = defaultJwtConfig) {
     val module = module {

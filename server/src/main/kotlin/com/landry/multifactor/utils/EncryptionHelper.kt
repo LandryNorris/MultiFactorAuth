@@ -1,9 +1,8 @@
 package com.landry.multifactor.utils
 
 import com.landry.multifactor.base64Decode
-import com.landry.multifactor.base64Encode
+import com.landry.multifactor.config
 import com.landry.multifactor.inject
-import com.landry.multifactor.koin
 import io.ktor.config.*
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -21,7 +20,6 @@ class EncryptionHelper private constructor() {
         private const val KEY_ALOGRITHM = "AES"
 
         val encryptionKeyStrong by lazy {
-            val config by koin.inject<ApplicationConfig>()
             val keyBytes = config.property("encryption.strongKey").getString().base64Decode()
             SecretKeySpec(keyBytes, "AES")
         }

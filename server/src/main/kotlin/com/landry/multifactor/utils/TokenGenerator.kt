@@ -3,6 +3,7 @@ package com.landry.multifactor.utils
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTCreator
 import com.auth0.jwt.algorithms.Algorithm
+import com.landry.multifactor.config
 import com.landry.multifactor.inject
 import com.landry.multifactor.toDate
 import io.ktor.config.*
@@ -11,7 +12,6 @@ import java.time.ZoneOffset
 
 class TokenGenerator private constructor() {
     companion object {
-        private val config by inject<ApplicationConfig>()
         fun generate(email: String): String {
             val secret = config.property("jwt.secret").getString()
             return buildJWT(email, durationHours = 1)

@@ -12,12 +12,15 @@ import com.landry.multifactor.utils.EncryptionHelper
 import io.ktor.config.ApplicationConfig
 import io.ktor.config.MapApplicationConfig
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.AfterClass
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.koin.core.context.stopKoin
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.koin.test.KoinTest
 import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -38,7 +41,6 @@ class DeviceRepositoryTest {
             stopKoin()
         }
     }
-
 
     @Test
     fun testRegisteringDevice() = runBlocking {
