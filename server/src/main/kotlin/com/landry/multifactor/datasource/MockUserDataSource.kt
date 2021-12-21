@@ -22,4 +22,8 @@ class MockUserDataSource: AbstractUsersDataSource {
     override suspend fun userExists(email: String): Boolean {
         return getUserByEmail(email) != null
     }
+
+    fun getRawUsersList(): List<User> {
+        return users
+    }
 }

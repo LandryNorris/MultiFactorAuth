@@ -2,6 +2,7 @@ package com.landry.multifactor.unit
 
 import com.landry.multifactor.base64Encoded
 import com.landry.multifactor.datasource.MockDeviceDataSource
+import com.landry.multifactor.faker
 import com.landry.multifactor.params.DeviceParams
 import com.landry.multifactor.params.QueryDeviceParams
 import com.landry.multifactor.randomDeviceParams
@@ -14,9 +15,11 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import org.koin.core.context.stopKoin
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -108,5 +111,19 @@ class DeviceRepositoryTest {
 
         val noMatchingDeviceResult = repo.queryDevices(QueryDeviceParams(mac = "12:34:56:78:ab:cd"))
         assertEquals(0, noMatchingDeviceResult.size)
+    }
+
+    @Test
+    fun testCreateAndDeactivateDevice() = runBlocking {
+        val repo = DeviceRepository(MockDeviceDataSource())
+        val deviceParams = randomDeviceParams()
+        val deviceResponse = repo.registerDevice(deviceParams)
+        assertNotNull(deviceResponse)
+
+        repo.deactivateDevice(deviceResponse.device.deviceId)
+
+        val newDeviceResponse = repo.getDevice(deviceResponse.device.deviceId)
+        assertNotNull(newDeviceResponse)
+        assertFalse(newDeviceResponse.isActive)
     }
 }

@@ -50,6 +50,21 @@ fun randomNewDevice() = Device(
     isActive = false
 )
 
+fun randomEmail(): String {
+    val first = faker.name.firstName()
+    val last = faker.name.lastName()
+
+    return if(faker.random.nextBoolean()) {
+        "$first${faker.random.nextInt()}@${randomDomain()}"
+    } else {
+        "$first.$last@${randomDomain()}"
+    }
+}
+
+fun randomDomain() = listOf(
+    "gmail.com", "msn.com", "verizon.net", "live.com", "outlook.com", "yahoo.com"
+).random()
+
 fun randomId() = faker.random.randomString(length = 20, locale = Locale.US)
 
 fun randomHexByteString() = faker.random.nextInt(256).toString(16)
