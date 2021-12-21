@@ -7,7 +7,7 @@ import io.ktor.server.testing.*
 class ApplicationTest {
     @Test
     fun testRoot() {
-        runKtorTest(config = defaultJwtConfig) {
+        runKtorTest(config = defaultConfig) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("MultiFactorAPI", response.content)

@@ -8,9 +8,9 @@ import com.landry.multifactor.responses.toResponse
 class MockDeviceDataSource: AbstractDeviceDataSource {
     private var devices = mutableListOf<Device>()
 
-    override suspend fun registerDevice(device: Device): DeviceResponse? {
+    override suspend fun registerDevice(device: Device): Device {
         devices.add(device.copy(id = devices.size.toString()))
-        return devices.last().toResponse()
+        return devices.last()
     }
 
     override suspend fun getDeviceById(id: String): Device? {
@@ -26,7 +26,7 @@ class MockDeviceDataSource: AbstractDeviceDataSource {
     }
 
     override suspend fun queryDevices(params: QueryDeviceParams): List<Device> {
-        return devices.map { it.decrypt() }.filter { device ->
+        return devices.filter { device ->
             params.userId?.run {
                 device.userId == this
             } ?: true && params.mac?.run {

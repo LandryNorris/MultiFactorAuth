@@ -8,6 +8,8 @@ import io.bkbn.kompendium.Notarized.notarizedGet
 import io.bkbn.kompendium.Notarized.notarizedPost
 import io.bkbn.kompendium.models.meta.MethodInfo
 import io.ktor.application.*
+import io.ktor.config.ApplicationConfig
+import io.ktor.config.MapApplicationConfig
 import io.ktor.routing.*
 import io.ktor.util.pipeline.*
 import kotlinx.coroutines.flow.first
@@ -18,6 +20,8 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
+import kotlin.collections.HashMap
 
 suspend fun <T> DocumentReference.await(strategy: DeserializationStrategy<T>): T? {
     val snapshot = get()
@@ -52,3 +56,12 @@ fun LocalDateTime.toDate(): Date = Date.from(toInstant(ZoneOffset.UTC))
 fun SecretKey.base64Encoded() = encoded.base64Encode()
 fun ByteArray.base64Encode() = Base64.getEncoder().encode(this).decodeToString()
 fun String.base64Decode(): ByteArray = Base64.getDecoder().decode(this)
+
+fun MapApplicationConfig.putAll(values: Map<String, String>) {
+    values.forEach { put(it.key, it.value) }
+}
+
+fun ApplicationConfig.encryptionKeyStrong(): SecretKey {
+    val keyBytes = property("encryption.strongKey").getString().base64Decode()
+    return SecretKeySpec(keyBytes, "AES")
+}

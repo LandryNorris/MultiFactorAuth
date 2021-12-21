@@ -25,7 +25,7 @@ class DeviceDataSourceTest {
         val deviceResponse = dataSource.registerDevice(device)
 
         assertNotNull(deviceResponse)
-        assertTrue(deviceResponse.deviceId.isNotEmpty())
+        assertTrue(deviceResponse.id.isNotEmpty())
     }
 
     @Test
@@ -35,9 +35,9 @@ class DeviceDataSourceTest {
         val deviceResponse = dataSource.registerDevice(device)
         assertNotNull(deviceResponse)
 
-        val foundDevice = dataSource.getDeviceById(deviceResponse.deviceId)
+        val foundDevice = dataSource.getDeviceById(deviceResponse.id)
         assertNotNull(foundDevice)
-        assertEquals(deviceResponse.deviceId, foundDevice.id)
+        assertEquals(deviceResponse.id, foundDevice.id)
     }
 
     @Test
@@ -51,12 +51,12 @@ class DeviceDataSourceTest {
         val secondDeviceResponse = dataSource.registerDevice(secondDevice)
         assertNotNull(secondDeviceResponse)
 
-        val foundDevice = dataSource.getDeviceById(firstDeviceResponse.deviceId)
+        val foundDevice = dataSource.getDeviceById(firstDeviceResponse.id)
         assertNotNull(foundDevice)
-        assertEquals(firstDeviceResponse.deviceId, foundDevice.id)
+        assertEquals(firstDeviceResponse.id, foundDevice.id)
 
-        val foundSecondDevice = dataSource.getDeviceById(secondDeviceResponse.deviceId)
+        val foundSecondDevice = dataSource.getDeviceById(secondDeviceResponse.id)
         assertNotNull(foundSecondDevice)
-        assertEquals(secondDeviceResponse.deviceId, foundSecondDevice.id)
+        assertEquals(secondDeviceResponse.id, foundSecondDevice.id)
     }
 }

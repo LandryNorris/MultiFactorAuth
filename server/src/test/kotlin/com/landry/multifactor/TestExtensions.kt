@@ -3,6 +3,7 @@ package com.landry.multifactor
 import com.landry.multifactor.models.Device
 import com.landry.multifactor.params.DeviceParams
 import com.landry.multifactor.plugins.*
+import com.landry.multifactor.utils.EncryptionHelper
 import io.github.serpro69.kfaker.faker
 import io.ktor.application.*
 import io.ktor.config.*
@@ -31,6 +32,15 @@ val defaultJwtConfig = mapOf(
     "jwt.realm" to "server",
     "jwt.domain" to "https://jwt-provider-domain/"
 )
+
+val defaultEncryptionConfig = mapOf(
+    "encryption.strongKey" to EncryptionHelper().generateKey().base64Encoded()
+)
+
+val defaultConfig = buildMap {
+    putAll(defaultJwtConfig)
+    putAll(defaultEncryptionConfig)
+}
 
 fun <R> runKtorTest(config: Map<String, String> = mapOf(), test: suspend TestApplicationEngine.() -> R) {
     withTestApplication {

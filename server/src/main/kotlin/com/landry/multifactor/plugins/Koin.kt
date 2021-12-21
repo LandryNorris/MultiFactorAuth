@@ -10,12 +10,11 @@ import org.koin.ktor.ext.Koin
 fun Application.configureKoin() {
     val mainModule = module {
         single { environment.config }
-
         single<AbstractUsersDataSource> { FirebaseUserDataSource() }
-        single { UserRepository(get()) }
-
         single<AbstractDeviceDataSource> { FirebaseDeviceDataSource() }
-        single { DeviceRepository(get()) }
+
+        single { UserRepository(get(), get()) }
+        single { DeviceRepository(get(), get()) }
     }
     install(Koin) {
         modules(mainModule)
@@ -25,12 +24,11 @@ fun Application.configureKoin() {
 fun Application.configureKoinTest() {
     val testModule = module {
         single { environment.config }
-
         single<AbstractUsersDataSource> { MockUserDataSource() }
-        single { UserRepository(get()) }
-
         single<AbstractDeviceDataSource> { MockDeviceDataSource() }
-        single { DeviceRepository(get()) }
+
+        single { UserRepository(get(), get()) }
+        single { DeviceRepository(get(), get()) }
     }
     install(Koin) {
         modules(testModule)

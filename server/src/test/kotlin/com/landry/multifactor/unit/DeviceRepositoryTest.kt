@@ -1,26 +1,15 @@
 package com.landry.multifactor.unit
 
-import com.landry.multifactor.base64Encoded
 import com.landry.multifactor.datasource.MockDeviceDataSource
-import com.landry.multifactor.faker
+import com.landry.multifactor.defaultConfig
 import com.landry.multifactor.params.DeviceParams
 import com.landry.multifactor.params.QueryDeviceParams
+import com.landry.multifactor.putAll
 import com.landry.multifactor.randomDeviceParams
 import com.landry.multifactor.repos.DeviceRepository
-import com.landry.multifactor.startKoinForConfig
-import com.landry.multifactor.utils.EncryptionHelper
-import io.ktor.config.ApplicationConfig
 import io.ktor.config.MapApplicationConfig
 import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
-import org.koin.core.context.stopKoin
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
-import org.koin.test.KoinTest
 import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -28,23 +17,11 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class DeviceRepositoryTest {
-    companion object {
-        @BeforeClass
-        @JvmStatic
-        fun setup() {
-            startKoinForConfig(config = mapOf("encryption.strongKey" to EncryptionHelper.generateKey().base64Encoded()))
-        }
-
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            stopKoin()
-        }
-    }
+    private val config = MapApplicationConfig().apply { putAll(defaultConfig) }
 
     @Test
     fun testRegisteringDevice() = runBlocking {
-        val repo = DeviceRepository(MockDeviceDataSource())
+        val repo = DeviceRepository(MockDeviceDataSource(), config)
         val deviceParams = randomDeviceParams()
         val deviceResponse = repo.registerDevice(deviceParams)
 
@@ -54,7 +31,7 @@ class DeviceRepositoryTest {
 
     @Test
     fun testRegisterAndGetDevice() = runBlocking {
-        val repo = DeviceRepository(MockDeviceDataSource())
+        val repo = DeviceRepository(MockDeviceDataSource(), config)
         val deviceParams = randomDeviceParams()
         val deviceResponse = repo.registerDevice(deviceParams)
         assertNotNull(deviceResponse)
@@ -67,7 +44,7 @@ class DeviceRepositoryTest {
 
     @Test
     fun testQueryDevices() = runBlocking {
-        val repo = DeviceRepository(MockDeviceDataSource())
+        val repo = DeviceRepository(MockDeviceDataSource(), config)
         val devices = listOf(
             DeviceParams("EB:7E:65:5C:49:00", "abcd", "Google Pixel 3"),
             DeviceParams("EB:7E:65:5C:49:01", "abcd", "Google Pixel 3"),
@@ -107,7 +84,7 @@ class DeviceRepositoryTest {
 
     @Test
     fun testCreateAndDeactivateDevice() = runBlocking {
-        val repo = DeviceRepository(MockDeviceDataSource())
+        val repo = DeviceRepository(MockDeviceDataSource(), config)
         val deviceParams = randomDeviceParams()
         val deviceResponse = repo.registerDevice(deviceParams)
         assertNotNull(deviceResponse)

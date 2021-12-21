@@ -1,5 +1,6 @@
 package com.landry.multifactor.routes
 
+import com.landry.multifactor.config
 import com.landry.multifactor.documentation.createDeviceDocs
 import com.landry.multifactor.documentation.deactivateDeviceDocs
 import com.landry.multifactor.documentation.getDeviceDocs
@@ -36,7 +37,7 @@ fun Route.deviceRoutes() {
 private fun Route.deviceByIdRoutes(repo: DeviceRepository) {
     notarizedGet(getDeviceDocs) {
         val id = call.parameters["id"] ?: throw IllegalArgumentException("id must not be null")
-        val device = repo.getDevice(id)!!.decrypt().toResponse()
+        val device = repo.getDevice(id)!!.toResponse()
         call.respond(HttpStatusCode.OK, device)
     }
 
@@ -59,7 +60,7 @@ private fun Route.baseDeviceRoutes(repo: DeviceRepository) {
         val mac = call.parameters["mac"]
         val isActive = call.parameters["isActive"]?.lowercase()?.toBooleanStrictOrNull()
         val devices = repo.queryDevices(QueryDeviceParams(userId, mac, isActive))
-            .map { it.decrypt().toResponse() }
+            .map { it.toResponse() }
         call.respond(devices)
     }
 }

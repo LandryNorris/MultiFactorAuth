@@ -24,7 +24,7 @@ fun Route.userRoutes() {
 private fun Route.baseUserRoutes(usersRepo: UserRepository) {
     notarizedGet(getUserByEmailDocs) {
         val email = call.parameters["email"] ?: throw IllegalArgumentException("email must not be null")
-        val userResponse = usersRepo.getUserByEmail(email)!!.decrypt().toUserResponse()
+        val userResponse = usersRepo.getUserByEmail(email)!!.toUserResponse()
         call.respond(status = HttpStatusCode.OK, userResponse)
     }
 }

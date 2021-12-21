@@ -3,27 +3,18 @@ package com.landry.multifactor.unit
 import com.landry.multifactor.base64Encoded
 import com.landry.multifactor.datasource.MockUserDataSource
 import com.landry.multifactor.defaultJwtConfig
+import com.landry.multifactor.encryptionKeyStrong
 import com.landry.multifactor.exceptions.EmailAlreadyExistsException
 import com.landry.multifactor.faker
 import com.landry.multifactor.params.RefreshParams
 import com.landry.multifactor.params.RegistrationParams
+import com.landry.multifactor.putAll
 import com.landry.multifactor.randomEmail
 import com.landry.multifactor.repos.UserRepository
-import com.landry.multifactor.startKoinForConfig
 import com.landry.multifactor.utils.EncryptionHelper
-import io.ktor.config.ApplicationConfig
 import io.ktor.config.MapApplicationConfig
 import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Rule
 import org.junit.Test
-import org.koin.core.context.stopKoin
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
-import org.koin.test.KoinTestRule
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
@@ -31,23 +22,12 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class UserRepositoryTest {
-    companion object {
-        @BeforeClass
-        @JvmStatic
-        fun setup() {
-            startKoinForConfig(config = HashMap(defaultJwtConfig).apply { put("encryption.strongKey", EncryptionHelper.generateKey().base64Encoded()) })
-        }
 
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            stopKoin()
-        }
-    }
+    private val config = MapApplicationConfig().apply { putAll(defaultJwtConfig); put("encryption.strongKey", EncryptionHelper().generateKey().base64Encoded()) }
 
     @Test
     fun testRegisterUser() = runBlocking {
-        val userRepository = UserRepository(MockUserDataSource())
+        val userRepository = UserRepository(MockUserDataSource(), config)
         val params = randomRegistrationParams()
         val userResponse = userRepository.register(params)
 
@@ -61,7 +41,7 @@ class UserRepositoryTest {
     @Test
     fun testUserDataIsEncrypted() = runBlocking {
         val userDataSource = MockUserDataSource()
-        val userRepository = UserRepository(userDataSource)
+        val userRepository = UserRepository(userDataSource, config)
         val params = randomRegistrationParams()
         val userResponse = userRepository.register(params)
 
@@ -72,7 +52,7 @@ class UserRepositoryTest {
         assertNotEquals(params.firstName, storedUser.firstName)
         assertNotEquals(params.lastName, storedUser.lastName)
 
-        val decryptedUser = storedUser.decrypt()
+        val decryptedUser = storedUser.decrypt(config.encryptionKeyStrong())
 
         assertEquals(params.email, decryptedUser.email)
         assertEquals(params.firstName, decryptedUser.firstName)
@@ -81,7 +61,7 @@ class UserRepositoryTest {
 
     @Test
     fun testRegisterAndLogin() = runBlocking {
-        val userRepository = UserRepository(MockUserDataSource())
+        val userRepository = UserRepository(MockUserDataSource(), config)
         val params = randomRegistrationParams()
         val userResponse = userRepository.register(params)
         assertNotNull(userResponse)
@@ -96,7 +76,7 @@ class UserRepositoryTest {
 
     @Test
     fun testRegisterAndRefresh() = runBlocking {
-        val userRepository = UserRepository(MockUserDataSource())
+        val userRepository = UserRepository(MockUserDataSource(), config)
         val params = randomRegistrationParams()
         val userResponse = userRepository.register(params)
         assertNotNull(userResponse)
@@ -113,7 +93,7 @@ class UserRepositoryTest {
 
     @Test
     fun testLoginNonExistentUser() = runBlocking {
-        val userRepository = UserRepository(MockUserDataSource())
+        val userRepository = UserRepository(MockUserDataSource(), config)
         val loginResponse = userRepository.login(randomEmail(), faker.bigBangTheory.quotes())
 
         assertNull(loginResponse)
@@ -121,7 +101,7 @@ class UserRepositoryTest {
 
     @Test
     fun testIncorrectLogin(): Unit = runBlocking {
-        val userRepository = UserRepository(MockUserDataSource())
+        val userRepository = UserRepository(MockUserDataSource(), config)
         val params = randomRegistrationParams()
         val userResponse = userRepository.register(params)
         assertNotNull(userResponse)
@@ -132,7 +112,7 @@ class UserRepositoryTest {
 
     @Test
     fun testCantRegisterSameUserTwice(): Unit = runBlocking {
-        val userRepository = UserRepository(MockUserDataSource())
+        val userRepository = UserRepository(MockUserDataSource(), config)
         val params = randomRegistrationParams()
         val userResponse = userRepository.register(params)
         assertNotNull(userResponse)

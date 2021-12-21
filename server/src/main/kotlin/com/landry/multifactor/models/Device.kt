@@ -17,23 +17,25 @@ data class Device(
     val iv: String,
     val isActive: Boolean): IdAble {
 
+    @Transient private val encryptionHelper = EncryptionHelper()
+
     // We can't encrypt values we will be querying for in Firestore.
     // We skip encrypting mac and userID in case we want to query those fields.
-    fun encrypt(key: SecretKey = EncryptionHelper.encryptionKeyStrong): Device {
-        val encryptedDeviceName = EncryptionHelper
+    fun encrypt(key: SecretKey): Device {
+        val encryptedDeviceName = encryptionHelper
             .encrypt(deviceName.toByteArray(), key, iv.toByteArray())
             .base64Encode()
-        val encryptedSecret = EncryptionHelper
+        val encryptedSecret = encryptionHelper
             .encrypt(secret.toByteArray(), key, iv.toByteArray())
             .base64Encode()
 
         return Device(id, mac, userId, encryptedDeviceName, encryptedSecret, iv, isActive)
     }
 
-    fun decrypt(key: SecretKey = EncryptionHelper.encryptionKeyStrong): Device {
-        val decryptedDeviceName = EncryptionHelper
+    fun decrypt(key: SecretKey): Device {
+        val decryptedDeviceName = encryptionHelper
             .decrypt(deviceName.base64Decode(), key, iv.toByteArray())
-        val decryptedSecret = EncryptionHelper
+        val decryptedSecret = encryptionHelper
             .decrypt(secret.base64Decode(), key, iv.toByteArray())
 
         return Device(id, mac, userId, decryptedDeviceName, decryptedSecret, iv, isActive)

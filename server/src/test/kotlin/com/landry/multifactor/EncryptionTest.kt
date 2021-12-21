@@ -10,15 +10,17 @@ import kotlin.test.assertTrue
 
 class EncryptionTest {
 
+    val encryptionHelper = EncryptionHelper()
+
     @Test
     fun testGenerateKey() {
-        val key = EncryptionHelper.generateKey().encoded.base64Encode()
+        val key = encryptionHelper.generateKey().encoded.base64Encode()
         assertTrue(key.isNotEmpty())
     }
 
     @Test
     fun testKeyStorage() {
-        val key = EncryptionHelper.generateKey().encoded
+        val key = encryptionHelper.generateKey().encoded
         val keyText = key.base64Encode()
         val decodedKey = keyText.base64Decode()
         assertContentEquals(key, decodedKey)
@@ -26,23 +28,23 @@ class EncryptionTest {
 
     @Test
     fun testEncryptDecryptString() {
-        val key = EncryptionHelper.generateKey()
-        val iv = EncryptionHelper.generateIV().decodeToString()
+        val key = encryptionHelper.generateKey()
+        val iv = encryptionHelper.generateIV().decodeToString()
 
         val message = "My message"
 
-        val encrypted = EncryptionHelper.encrypt(message.toByteArray(), key, iv.toByteArray())
+        val encrypted = encryptionHelper.encrypt(message.toByteArray(), key, iv.toByteArray())
         val encryptedString = encrypted.base64Encode()
         assertContentEquals(encrypted, encryptedString.base64Decode())
-        val decrypted = EncryptionHelper.decrypt(encryptedString.base64Decode(), key, iv.toByteArray())
+        val decrypted = encryptionHelper.decrypt(encryptedString.base64Decode(), key, iv.toByteArray())
 
         assertEquals(message, decrypted)
     }
 
     @Test
     fun testEncryptingDecryptingUser() {
-        val key = EncryptionHelper.generateKey()
-        val iv = EncryptionHelper.generateIV().base64Encode()
+        val key = encryptionHelper.generateKey()
+        val iv = encryptionHelper.generateIV().base64Encode()
         val user = User(
             "",
             "email@email.test",
@@ -58,8 +60,8 @@ class EncryptionTest {
 
     @Test
     fun testEncryptingDecryptingDevice() {
-        val key = EncryptionHelper.generateKey()
-        val iv = EncryptionHelper.generateIV().base64Encode()
+        val key = encryptionHelper.generateKey()
+        val iv = encryptionHelper.generateIV().base64Encode()
         val device = Device("", "A MAC value", "A user ID", "A Device Name", "A Secret Value", iv, true)
 
         val encryptedDevice = device.encrypt(key)
