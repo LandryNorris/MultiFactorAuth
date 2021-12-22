@@ -51,7 +51,7 @@ private fun Route.deviceByIdRoutes(repo: DeviceRepository) {
 private fun Route.baseDeviceRoutes(repo: DeviceRepository) {
     notarizedPost(createDeviceDocs) {
         val params = call.receive<DeviceParams>()
-        val registeredDeviceResponse = repo.registerDevice(params)!!
+        val registeredDeviceResponse = repo.registerDevice(params)
         call.respond(HttpStatusCode.Created, registeredDeviceResponse)
     }
 

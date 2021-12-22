@@ -17,6 +17,8 @@ import io.ktor.http.*
 val loginExample = LoginParams("email", "password")
 val registrationExample = RegistrationParams("email", "first", "last", "password")
 val exampleUserResponse = UserResponse("id", "first", "last", "email")
+val refreshExample = RefreshParams("refreshToken", "email")
+val exampleRefreshResponse = RefreshResponse("token", "refreshToken")
 
 val loginDocs = MethodInfo.PostInfo<Unit, LoginParams, LoginResponse>(
     summary = "Log in to an account.",
@@ -34,7 +36,9 @@ val registrationDocs = MethodInfo.PostInfo<Unit, RegistrationParams, UserRespons
 )
 
 val refreshDocs = MethodInfo.PostInfo<Unit, RefreshParams, RefreshResponse>(
-    summary = "Request a refresh token"
+    summary = "Request a refresh token",
+    requestInfo = RequestInfo("Refresh Token", examples = mapOf("example" to refreshExample)),
+    responseInfo = ResponseInfo(HttpStatusCode.OK, "Refresh Response", examples = mapOf("example" to exampleRefreshResponse))
 )
 
 val getUserByEmailDocs = MethodInfo.GetInfo(

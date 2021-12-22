@@ -1,8 +1,7 @@
 package com.landry.multifactor.unit
 
-import com.landry.multifactor.base64Encoded
 import com.landry.multifactor.datasource.MockUserDataSource
-import com.landry.multifactor.defaultJwtConfig
+import com.landry.multifactor.defaultConfig
 import com.landry.multifactor.encryptionKeyStrong
 import com.landry.multifactor.exceptions.EmailAlreadyExistsException
 import com.landry.multifactor.faker
@@ -11,7 +10,6 @@ import com.landry.multifactor.params.RegistrationParams
 import com.landry.multifactor.putAll
 import com.landry.multifactor.randomEmail
 import com.landry.multifactor.repos.UserRepository
-import com.landry.multifactor.utils.EncryptionHelper
 import io.ktor.config.MapApplicationConfig
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -23,7 +21,9 @@ import kotlin.test.assertTrue
 
 class UserRepositoryTest {
 
-    private val config = MapApplicationConfig().apply { putAll(defaultJwtConfig); put("encryption.strongKey", EncryptionHelper().generateKey().base64Encoded()) }
+    private val config = MapApplicationConfig().apply {
+        putAll(defaultConfig)
+    }
 
     @Test
     fun testRegisterUser() = runBlocking {
@@ -128,6 +128,9 @@ class UserRepositoryTest {
     }
 
     private fun randomRegistrationParams(): RegistrationParams {
-        return RegistrationParams(randomEmail(), faker.name.firstName(), faker.name.lastName(), faker.cultureSeries.cultureShips())
+        return RegistrationParams(randomEmail(),
+            faker.name.firstName(),
+            faker.name.lastName(),
+            faker.cultureSeries.cultureShips())
     }
 }

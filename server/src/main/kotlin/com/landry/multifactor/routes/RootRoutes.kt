@@ -21,33 +21,6 @@ import io.ktor.routing.Route
 import org.koin.ktor.ext.inject
 
 fun Route.rootRoutes() {
-    val usersRepo by inject<UserRepository>()
-
-    notarizedPostRoute("/login", loginDocs) {
-        val loginParams = call.receive<LoginParams>()
-        val loginResponse = usersRepo.login(loginParams.email, loginParams.password)
-
-        if (loginResponse == null) {
-            throw AuthenticationException()
-        } else {
-            call.respond(HttpStatusCode.OK, loginResponse)
-        }
-    }
-
-    notarizedPostRoute("/register", registrationDocs) {
-        val registrationParams = call.receive<RegistrationParams>()
-        val registrationResponse = usersRepo.register(registrationParams)
-        call.respond(HttpStatusCode.OK, registrationResponse)
-    }
-
-    authenticate("jwt") {
-        notarizedPostRoute("/refresh", refreshDocs) {
-            val params = call.receive<RefreshParams>()
-            val response = usersRepo.refresh(params)
-
-            call.respond(response)
-        }
-    }
 
     notarizedGetRoute("/", rootDocs) {
         call.respondText("MultiFactorAPI")

@@ -7,11 +7,12 @@ import com.landry.multifactor.utils.EncryptionHelper
 import io.github.serpro69.kfaker.faker
 import io.ktor.application.*
 import io.ktor.config.*
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.server.testing.*
 import kotlinx.coroutines.runBlocking
-import org.koin.core.qualifier._q
-import org.koin.core.qualifier.named
-import org.koin.core.scope.Scope
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import java.util.*
 
@@ -52,6 +53,15 @@ fun <R> runKtorTest(config: Map<String, String> = mapOf(), test: suspend TestApp
             test()
         }
     }
+}
+
+fun TestApplicationRequest.jwt(jwt: String) {
+    addHeader(HttpHeaders.Authorization, "Bearer $jwt")
+}
+
+fun <T> TestApplicationRequest.json(value: T, strategy: SerializationStrategy<T>) {
+    addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+    setBody(Json.encodeToString(strategy, value))
 }
 
 val faker = faker {  }

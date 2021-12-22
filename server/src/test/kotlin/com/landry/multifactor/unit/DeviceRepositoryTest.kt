@@ -14,6 +14,7 @@ import java.lang.IllegalArgumentException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DeviceRepositoryTest {
@@ -75,7 +76,8 @@ class DeviceRepositoryTest {
         val devicesByMac = repo.queryDevices(QueryDeviceParams(mac = "EB:7E:65:5C:49:00"))
         assertEquals(1, devicesByMac.size)
 
-        val allParamsResult = repo.queryDevices(QueryDeviceParams(mac = "60:6B:0A:AC:DD:92", userId = "1234", active = true))
+        val allParamsResult = repo.queryDevices(
+            QueryDeviceParams(mac = "60:6B:0A:AC:DD:92", userId = "1234", active = true))
         assertEquals(1, allParamsResult.size)
 
         val noMatchingDeviceResult = repo.queryDevices(QueryDeviceParams(mac = "12:34:56:78:ab:cd"))
@@ -94,5 +96,12 @@ class DeviceRepositoryTest {
         val newDeviceResponse = repo.getDevice(deviceResponse.device.deviceId)
         assertNotNull(newDeviceResponse)
         assertFalse(newDeviceResponse.isActive)
+    }
+
+    @Test
+    fun testGetNonexistentDevice() = runBlocking {
+        val repo = DeviceRepository(MockDeviceDataSource(), config)
+        val device = repo.getDevice("invalid id")
+        assertNull(device)
     }
 }
