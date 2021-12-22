@@ -36,13 +36,13 @@ fun Route.deviceRoutes() {
 
 private fun Route.deviceByIdRoutes(repo: DeviceRepository) {
     notarizedGet(getDeviceDocs) {
-        val id = call.parameters["id"] ?: throw IllegalArgumentException("id must not be null")
+        val id = call.parameters["id"]!! //id is a path parameter, which can never be null for Ktor.
         val device = repo.getDevice(id)!!.toResponse()
         call.respond(HttpStatusCode.OK, device)
     }
 
     notarizedPostRoute("deactivate", deactivateDeviceDocs) {
-        val id = call.parameters["id"] ?: throw IllegalArgumentException("id must not be null")
+        val id = call.parameters["id"]!! //id is a path parameter, which can never be null for Ktor.
         repo.deactivateDevice(id)
         call.respond(HttpStatusCode.OK)
     }
@@ -58,7 +58,7 @@ private fun Route.baseDeviceRoutes(repo: DeviceRepository) {
     notarizedGet(queryDevicesDocs) {
         val userId = call.parameters["userId"]
         val mac = call.parameters["mac"]
-        val isActive = call.parameters["isActive"]?.lowercase()?.toBooleanStrictOrNull()
+        val isActive = call.parameters["active"]?.lowercase()?.toBooleanStrictOrNull()
         val devices = repo.queryDevices(QueryDeviceParams(userId, mac, isActive))
             .map { it.toResponse() }
         call.respond(devices)
