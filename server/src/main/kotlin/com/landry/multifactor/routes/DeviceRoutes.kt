@@ -1,6 +1,5 @@
 package com.landry.multifactor.routes
 
-import com.landry.multifactor.config
 import com.landry.multifactor.documentation.createDeviceDocs
 import com.landry.multifactor.documentation.deactivateDeviceDocs
 import com.landry.multifactor.documentation.getDeviceDocs

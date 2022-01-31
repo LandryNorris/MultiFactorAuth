@@ -2,8 +2,6 @@ package com.landry.multifactor.datasource
 
 import com.landry.multifactor.models.Device
 import com.landry.multifactor.params.QueryDeviceParams
-import com.landry.multifactor.responses.DeviceResponse
-import com.landry.multifactor.responses.toResponse
 
 class MockDeviceDataSource: AbstractDeviceDataSource {
     private var devices = mutableListOf<Device>()

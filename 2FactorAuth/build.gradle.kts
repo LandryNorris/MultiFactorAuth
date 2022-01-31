@@ -1,5 +1,4 @@
 
-
 buildscript {
     val composeVersion: String by project
 
@@ -10,9 +9,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
         //classpath("com.android.tools.lint:lint:30.0.4")
-        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath("com.android.tools.build:gradle:7.1.0")
         classpath("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
         classpath("com.squareup.sqldelight:gradle-plugin:1.5.3")
     }
